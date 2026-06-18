@@ -91,9 +91,9 @@ function render(){
     (activeCat==="Всі" || p.cat===activeCat) &&
     (!q || (p.name+" "+(p.key||"")+" "+p.cat).toLowerCase().includes(q))
   );
+  filteredList.sort((a,b)=>a.name.localeCompare(b.name,"uk"));
   if(sort==="cheap") filteredList.sort((a,b)=>a.price-b.price);
   if(sort==="exp")   filteredList.sort((a,b)=>b.price-a.price);
-  if(sort==="name")  filteredList.sort((a,b)=>a.name.localeCompare(b.name,"uk"));
 
   const total = filteredList.length;
   const totalPages = Math.ceil(total / PAGE_SIZE);
