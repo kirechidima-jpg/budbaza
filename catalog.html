@@ -68,7 +68,8 @@ let filteredList = [];
 const chipsEl = document.getElementById("chips");
 function buildChips(){
   chipsEl.innerHTML = "";
-  CATS.forEach(c=>{
+  const sortedCats = ["Всі", ...CATS.filter(c=>c!=="Всі").sort((a,b)=>a.localeCompare(b,"uk"))];
+  sortedCats.forEach(c=>{
     const b = document.createElement("button");
     b.className = "chip" + (c===activeCat ? " active" : "");
     // Показуємо кількість товарів у категорії
