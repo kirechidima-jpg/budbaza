@@ -94,10 +94,13 @@ function productCard(p){
   var ico = p.ico || "";
   var name = p.name || "";
   var meta = p.meta || "";
+  var imgHtml = p.img
+    ? "<img src=\"" + p.img + "\" alt=\"" + name + "\" loading=\"lazy\" style=\"width:100%;height:100%;object-fit:contain;\">"
+    : ico;
 
   return "<article class=\"card\">" +
     "<a class=\"card-img\" href=\"product.html?id=" + p.id + "\" aria-label=\"" + name + "\">" +
-    ico + hitBadge + "</a>" +
+    imgHtml + hitBadge + "</a>" +
     "<div class=\"card-body\">" +
     "<h3><a href=\"product.html?id=" + p.id + "\">" + name + "</a></h3>" +
     (meta ? "<div class=\"meta\">" + meta + "</div>" : "") +
