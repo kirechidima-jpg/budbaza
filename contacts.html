@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Контакти — БУДБАЗА</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+  <div class="hwrap">
+    <a class="logo" href="index.html">БУД<span>БАЗА</span><small>будівельні матеріали · Одеса</small></a>
+    <button class="burger" onclick="toggleNav()" aria-label="Меню">☰</button>
+    <nav>
+      <a href="index.html">Головна</a>
+      <a href="catalog.html">Каталог</a>
+      <a href="calc.html">Калькулятор</a>
+      <a href="contacts.html" class="current">Контакти</a>
+    </nav>
+    <a class="cart-link" href="cart.html">🛒 Кошик <span class="cart-count" id="cartCount">0</span></a>
+  </div>
+</header>
+
+<main>
+  <div class="breadcrumbs"><a href="index.html">Головна</a> / Контакти</div>
+  <div class="sec-head"><span class="tag">Контакти</span><h2>Склад і офіс</h2></div>
+  <p class="sec-sub">Приїжджайте на склад особисто — покажемо матеріал, зважимо, відвантажимо. Або телефонуйте — приймемо замовлення дистанційно.</p>
+
+  <div class="contact-grid">
+    <div>
+      <div class="contact-card" style="margin-bottom:18px">
+        <h3>// Адреса та графік</h3>
+        <p>📍 м. Одеса, вул. Промислова, 27</p>
+        <p>🕗 Пн–Сб: 8:00–18:00, Нд: вихідний</p>
+        <p>🚛 Відвантаження зі складу — до 17:30</p>
+      </div>
+      <div class="contact-card" style="margin-bottom:18px">
+        <h3>// Телефони та пошта</h3>
+        <p>📞 <a href="tel:+380487000000">+38 (048) 700-00-00</a> — відділ продажів</p>
+        <p>📱 <a href="tel:+380670000000">+38 (067) 000-00-00</a> — Viber / Telegram</p>
+        <p>✉️ <a href="mailto:zakaz@budbaza.ua">zakaz@budbaza.ua</a></p>
+      </div>
+      <div class="contact-card">
+        <h3>// Реквізити для безготівкового розрахунку</h3>
+        <p>ТОВ «БУДБАЗА», ЄДРПОУ 00000000</p>
+        <p>IBAN UA00 0000 0000 0000 0000 0000 0000</p>
+        <p>Платник ПДВ. Рахунок надсилаємо на email протягом години.</p>
+      </div>
+    </div>
+    <div class="map-stub">
+      <div class="pin">📍</div>
+      <b>вул. Промислова, 27</b>
+      <p style="color:#c8d3e2;font-size:13.5px;margin-top:6px;max-width:34ch">Сюди можна вставити Google Maps — додайте iframe з картою вашої точки.</p>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="fwrap">
+    <div><b>БУДБАЗА</b>м. Одеса, вул. Промислова, 27<br>Пн–Сб 8:00–18:00</div>
+    <div><b>Контакти</b>+38 (048) 700-00-00<br>+38 (067) 000-00-00<br>zakaz@budbaza.ua</div>
+    <div><b>Розділи</b><a href="catalog.html">Каталог</a><br><a href="calc.html">Калькулятор</a><br><a href="cart.html">Кошик</a></div>
+    <div><b>Доставка</b>Одеса та область<br>Маніпулятор, самовивіз зі складу</div>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

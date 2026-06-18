@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Каталог — БУДБАЗА</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+  <div class="hwrap">
+    <a class="logo" href="index.html">БУД<span>БАЗА</span><small>будівельні матеріали · Одеса</small></a>
+    <button class="burger" onclick="toggleNav()" aria-label="Меню">☰</button>
+    <nav>
+      <a href="index.html">Головна</a>
+      <a href="catalog.html" class="current">Каталог</a>
+      <a href="calc.html">Калькулятор</a>
+      <a href="contacts.html">Контакти</a>
+    </nav>
+    <a class="cart-link" href="cart.html">🛒 Кошик <span class="cart-count" id="cartCount">0</span></a>
+  </div>
+</header>
+
+<main>
+  <div class="breadcrumbs"><a href="index.html">Головна</a> / Каталог</div>
+  <div class="sec-head"><span class="tag">Каталог</span><h2>Матеріали в наявності</h2></div>
+  <p class="sec-sub">Ціни вказані з ПДВ. Для гуртових замовлень від 50 000 ₴ — індивідуальний прорахунок.</p>
+
+  <div class="toolbar">
+    <div class="search">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input id="searchInput" type="text" placeholder="Пошук: цемент, газоблок, арматура...">
+    </div>
+    <select class="sort" id="sortSel">
+      <option value="pop">За популярністю</option>
+      <option value="cheap">Спочатку дешевші</option>
+      <option value="exp">Спочатку дорожчі</option>
+      <option value="name">За назвою</option>
+    </select>
+  </div>
+
+  <div class="chips" id="chips"></div>
+  <div class="grid" id="grid"></div>
+</main>
+
+<footer>
+  <div class="fwrap">
+    <div><b>БУДБАЗА</b>м. Одеса, вул. Промислова, 27<br>Пн–Сб 8:00–18:00</div>
+    <div><b>Контакти</b>+38 (048) 700-00-00<br>+38 (067) 000-00-00<br>zakaz@budbaza.ua</div>
+    <div><b>Розділи</b><a href="catalog.html">Каталог</a><br><a href="calc.html">Калькулятор</a><br><a href="cart.html">Кошик</a></div>
+    <div><b>Доставка</b>Одеса та область<br>Маніпулятор, самовивіз зі складу</div>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+<script>
+const PAGE_SIZE = 48;
+let activeCat = new URLSearchParams(location.search).get("cat") || "Всі";
+if(!CATS.includes(activeCat)) activeCat = "Всі";
+let currentPage = 1;
+let filteredList = [];
+
+const chipsEl = document.getElementById("chips");
+function buildChips(){
+  chipsEl.innerHTML = "";
+  CATS.forEach(c=>{
+    const b = document.createElement("button");
+    b.className = "chip" + (c===activeCat ? " active" : "");
+    // Показуємо кількість товарів у категорії
+    const cnt = c==="Всі" ? PRODUCTS.length : PRODUCTS.filter(p=>p.cat===c).length;
+    b.textContent = c + (cnt ? ` (${cnt})` : "");
+    b.onclick = ()=>{
+      activeCat = c; currentPage = 1;
+      history.replaceState(null,"", c==="Всі" ? "catalog.html" : "catalog.html?cat="+encodeURIComponent(c));
+      buildChips(); render();
+    };
+    chipsEl.appendChild(b);
+  });
+}
+
+function render(){
+  const q = document.getElementById("searchInput").value.trim().toLowerCase();
+  const sort = document.getElementById("sortSel").value;
+  filteredList = PRODUCTS.filter(p=>
+    (activeCat==="Всі" || p.cat===activeCat) &&
+    (!q || (p.name+" "+(p.key||"")+" "+p.cat).toLowerCase().includes(q))
+  );
+  if(sort==="cheap") filteredList.sort((a,b)=>a.price-b.price);
+  if(sort==="exp")   filteredList.sort((a,b)=>b.price-a.price);
+  if(sort==="name")  filteredList.sort((a,b)=>a.name.localeCompare(b.name,"uk"));
+
+  const total = filteredList.length;
+  const totalPages = Math.ceil(total / PAGE_SIZE);
+  if(currentPage > totalPages) currentPage = 1;
+  const page = filteredList.slice((currentPage-1)*PAGE_SIZE, currentPage*PAGE_SIZE);
+
+  const grid = document.getElementById("grid");
+  if(!total){
+    grid.innerHTML = `<div class="empty">Нічого не знайдено за запитом «${q}».<br>Спробуйте інші слова або зателефонуйте.</div>`;
+    renderPager(0,0); return;
+  }
+  grid.innerHTML = page.map(productCard).join("");
+  renderPager(totalPages, total);
+}
+
+function renderPager(totalPages, total){
+  let el = document.getElementById("pager");
+  if(!el){ el = document.createElement("div"); el.id="pager"; el.style="text-align:center;margin:24px 0;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;align-items:center;"; document.getElementById("grid").after(el); }
+  if(totalPages <= 1){ el.innerHTML=""; return; }
+  const from = (currentPage-1)*PAGE_SIZE+1, to = Math.min(currentPage*PAGE_SIZE, total);
+  let html = `<span style="color:#666;font-size:.85rem">${from}–${to} з ${total}</span>`;
+  if(currentPage>1) html += `<button onclick="goPage(${currentPage-1})" style="padding:6px 14px;border:1px solid #ccc;border-radius:6px;cursor:pointer;background:#fff">← Назад</button>`;
+  // up to 7 page buttons
+  const start = Math.max(1, currentPage-3), end = Math.min(totalPages, start+6);
+  for(let p=start;p<=end;p++){
+    const active = p===currentPage ? "background:#e63000;color:#fff;border-color:#e63000;" : "background:#fff;";
+    html += `<button onclick="goPage(${p})" style="padding:6px 12px;border:1px solid #ccc;border-radius:6px;cursor:pointer;min-width:36px;${active}">${p}</button>`;
+  }
+  if(currentPage<totalPages) html += `<button onclick="goPage(${currentPage+1})" style="padding:6px 14px;border:1px solid #ccc;border-radius:6px;cursor:pointer;background:#fff">Вперед →</button>`;
+  el.innerHTML = html;
+}
+
+function goPage(p){ currentPage=p; render(); window.scrollTo({top:0,behavior:"smooth"}); }
+
+// Reset page on search/filter
+document.getElementById("searchInput").addEventListener("input", ()=>{ currentPage=1; render(); });
+document.getElementById("sortSel").addEventListener("change", ()=>{ currentPage=1; render(); });
+
+buildChips(); render();
+</script>
+</body>
+</html>

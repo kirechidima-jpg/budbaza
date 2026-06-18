@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>БУДБАЗА — будівельні матеріали в Одесі</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+  <div class="hwrap">
+    <a class="logo" href="index.html">БУД<span>БАЗА</span><small>будівельні матеріали · Одеса</small></a>
+    <button class="burger" onclick="toggleNav()" aria-label="Меню">☰</button>
+    <nav>
+      <a href="index.html" class="current">Головна</a>
+      <a href="catalog.html">Каталог</a>
+      <a href="calc.html">Калькулятор</a>
+      <a href="contacts.html">Контакти</a>
+    </nav>
+    <a class="cart-link" href="cart.html">🛒 Кошик <span class="cart-count" id="cartCount">0</span></a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-in">
+    <div>
+      <h1>Все для будови —<br>зі складу <em>за 24 години</em></h1>
+      <p>Цемент, цегла, газоблок, арматура, сухі суміші та утеплювач. Гуртові ціни для будівельних бригад, доставка маніпулятором по Одесі та області.</p>
+      <div class="hero-actions">
+        <a href="catalog.html" class="btn btn-orange">Перейти до каталогу</a>
+        <a href="calc.html" class="btn btn-ghost">Розрахувати матеріали</a>
+      </div>
+    </div>
+    <div class="hero-card">
+      <h3>// Склад сьогодні</h3>
+      <div class="hero-stat"><span>Позицій у наявності</span><b>5 542</b></div>
+      <div class="hero-stat"><span>Мінімальна доставка</span><b>від 350 ₴</b></div>
+      <div class="hero-stat"><span>Знижка від 10 палет</span><b>−7 %</b></div>
+      <div class="hero-stat"><span>Графік роботи</span><b>Пн–Сб 8:00–18:00</b></div>
+    </div>
+  </div>
+</section>
+
+<main>
+  <section>
+    <div class="sec-head"><span class="tag">01 / Хіти продажів</span><h2>Найчастіше беруть на об'єкт</h2></div>
+    <p class="sec-sub">Базові позиції, які завжди є на складі у великій кількості.</p>
+    <div class="grid" id="hitsGrid"></div>
+    <div style="margin-top:24px;text-align:center">
+      <a href="catalog.html" class="btn btn-dark">Весь каталог — 5 542 позиції →</a>
+    </div>
+  </section>
+
+  <div class="ruler" aria-hidden="true"></div>
+
+  <section style="margin-top:48px">
+    <div class="sec-head"><span class="tag">02 / Категорії</span><h2>Що є на складі</h2></div>
+    <div class="chips" id="homeCats"></div>
+  </section>
+
+  <div class="ruler" aria-hidden="true"></div>
+
+  <section style="margin-top:48px">
+    <div class="sec-head"><span class="tag">03 / Чому ми</span><h2>Працюємо як бригада</h2></div>
+    <div class="feats">
+      <div class="feat"><div class="ico">🏗️</div><h3>Власний склад 4 000 м²</h3><p>Усі позиції з каталогу фізично на складі в Одесі. Без «під замовлення через 2 тижні».</p></div>
+      <div class="feat"><div class="ico">🚛</div><h3>Доставка маніпулятором</h3><p>Розвантажимо палети прямо на об'єкті. По місту — в день замовлення.</p></div>
+      <div class="feat"><div class="ico">📐</div><h3>Прорахунок кошторису</h3><p>Безкоштовно порахуємо матеріали за вашим проєктом — або скористайтеся <a href="calc.html">калькулятором</a>.</p></div>
+      <div class="feat"><div class="ico">↩️</div><h3>Повернення залишків</h3><p>Невикористані цілі палети приймаємо назад протягом 30 днів.</p></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="fwrap">
+    <div><b>БУДБАЗА</b>м. Одеса, вул. Промислова, 27<br>Пн–Сб 8:00–18:00</div>
+    <div><b>Контакти</b>+38 (048) 700-00-00<br>+38 (067) 000-00-00<br>zakaz@budbaza.ua</div>
+    <div><b>Розділи</b><a href="catalog.html">Каталог</a><br><a href="calc.html">Калькулятор</a><br><a href="cart.html">Кошик</a></div>
+    <div><b>Доставка</b>Одеса та область<br>Маніпулятор, самовивіз зі складу</div>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+<script>
+  document.getElementById("hitsGrid").innerHTML =
+    PRODUCTS.filter(p=>p.hit).concat(PRODUCTS.filter(p=>!p.hit).slice(0,5)).slice(0,8).map(productCard).join("");
+
+  document.getElementById("homeCats").innerHTML =
+    CATS.filter(c=>c!=="Всі").map(c=>`<a class="chip" href="catalog.html?cat=${encodeURIComponent(c)}">${c}</a>`).join("");
+</script>
+</body>
+</html

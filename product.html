@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Товар — БУДБАЗА</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+  <div class="hwrap">
+    <a class="logo" href="index.html">БУД<span>БАЗА</span><small>будівельні матеріали · Одеса</small></a>
+    <button class="burger" onclick="toggleNav()" aria-label="Меню">☰</button>
+    <nav>
+      <a href="index.html">Головна</a>
+      <a href="catalog.html" class="current">Каталог</a>
+      <a href="calc.html">Калькулятор</a>
+      <a href="contacts.html">Контакти</a>
+    </nav>
+    <a class="cart-link" href="cart.html">🛒 Кошик <span class="cart-count" id="cartCount">0</span></a>
+  </div>
+</header>
+
+<main>
+  <div class="breadcrumbs" id="crumbs"><a href="index.html">Головна</a> / <a href="catalog.html">Каталог</a></div>
+  <div id="productBox"></div>
+  <section class="related" id="relatedSec" style="display:none">
+    <div class="sec-head"><span class="tag">Схожі товари</span><h2>З цієї ж категорії</h2></div>
+    <div class="grid" id="relatedGrid"></div>
+  </section>
+</main>
+
+<footer>
+  <div class="fwrap">
+    <div><b>БУДБАЗА</b>м. Одеса, вул. Промислова, 27<br>Пн–Сб 8:00–18:00</div>
+    <div><b>Контакти</b>+38 (048) 700-00-00<br>+38 (067) 000-00-00<br>zakaz@budbaza.ua</div>
+    <div><b>Розділи</b><a href="catalog.html">Каталог</a><br><a href="calc.html">Калькулятор</a><br><a href="cart.html">Кошик</a></div>
+    <div><b>Доставка</b>Одеса та область<br>Маніпулятор, самовивіз зі складу</div>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+<script>
+const id = parseInt(new URLSearchParams(location.search).get("id"), 10);
+const p = PRODUCTS.find(x=>x.id===id);
+const box = document.getElementById("productBox");
+
+if(!p){
+  box.innerHTML = `<div class="empty" style="display:block">Товар не знайдено. <br><br><a class="btn btn-dark" href="catalog.html">Повернутися в каталог</a></div>`;
+}else{
+  document.title = p.name + " — БУДБАЗА";
+  document.getElementById("crumbs").innerHTML =
+    `<a href="index.html">Головна</a> / <a href="catalog.html">Каталог</a> / <a href="catalog.html?cat=${encodeURIComponent(p.cat)}">${p.cat}</a> / ${p.name}`;
+
+  box.innerHTML = `
+    <div class="product">
+      <div class="product-img">${p.ico}${p.hit?'<span class="badge hit">Хіт продажів</span>':''}</div>
+      <div>
+        <div class="p-cat">${p.cat}</div>
+        <h1>${p.name}</h1>
+        <div class="p-meta">${p.meta}</div>
+        <div class="p-buy">
+          <div class="p-price">${fmt(p.price)} <small>/ ${p.unit}</small></div>
+          <div class="qty" aria-label="Кількість">
+            <button onclick="chg(-1)" aria-label="Менше">−</button>
+            <span id="qtyVal">1</span>
+            <button onclick="chg(1)" aria-label="Більше">+</button>
+          </div>
+          <button class="btn btn-orange" id="add-${p.id}" onclick="buy()">＋ Додати в кошик</button>
+        </div>
+        <p class="p-desc">${p.desc}</p>
+        <div class="spec">
+          ${p.specs.map(s=>`<div class="spec-row"><span>${s[0]}</span><span><b>${s[1]}</b></span></div>`).join("")}
+        </div>
+      </div>
+    </div>`;
+
+  const related = PRODUCTS.filter(x=>x.cat===p.cat && x.id!==p.id).slice(0,4);
+  if(related.length){
+    document.getElementById("relatedSec").style.display = "";
+    document.getElementById("relatedGrid").innerHTML = related.map(productCard).join("");
+  }
+}
+
+let qty = 1;
+function chg(d){
+  qty = Math.max(1, qty + d);
+  document.getElementById("qtyVal").textContent = qty;
+}
+function buy(){
+  addToCart(p.id, qty);
+  qty = 1;
+  document.getElementById("qtyVal").textContent = 1;
+}
+</script>
+</body>
+</html>
