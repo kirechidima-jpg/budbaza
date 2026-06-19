@@ -85,7 +85,7 @@ select.sort{height:48px;border:1.5px solid var(--line);border-radius:var(--radiu
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px}
 .card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);display:flex;flex-direction:column;overflow:hidden;box-shadow:var(--shadow);transition:transform .15s,box-shadow .15s}
 .card:hover{transform:translateY(-3px);box-shadow:0 8px 22px rgba(30,33,38,.14)}
-.card-img{height:120px;display:flex;align-items:center;justify-content:center;font-size:52px;background:linear-gradient(135deg,var(--concrete),var(--concrete-d));border-bottom:1px solid var(--line);position:relative;text-decoration:none}
+.card-img{height:120px;display:flex;align-items:center;justify-content:center;font-size:52px;background:#fff;border-bottom:1px solid var(--line);position:relative;text-decoration:none}
 .badge{position:absolute;top:10px;left:10px;background:var(--blueprint);color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:2px}
 .badge.hit{background:var(--orange)}
 .card-body{padding:14px 16px 16px;display:flex;flex-direction:column;flex:1}
@@ -103,7 +103,7 @@ select.sort{height:48px;border:1.5px solid var(--line);border-radius:var(--radiu
 
 /* ───── картка товару ───── */
 .product{display:grid;grid-template-columns:1fr 1fr;gap:36px;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:32px;box-shadow:var(--shadow)}
-.product-img{min-height:300px;display:flex;align-items:center;justify-content:center;font-size:110px;background:linear-gradient(135deg,var(--concrete),var(--concrete-d));border:1px solid var(--line);border-radius:var(--radius);position:relative}
+.product-img{min-height:300px;display:flex;align-items:center;justify-content:center;font-size:110px;background:#fff;border:1px solid var(--line);border-radius:var(--radius);position:relative}
 .product h1{font-size:26px;text-transform:none;font-family:'Inter';letter-spacing:0;font-weight:700;line-height:1.25}
 .product .p-cat{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--blueprint);font-weight:700;margin-bottom:8px}
 .product .p-meta{color:var(--ink-soft);font-size:14px;margin-top:10px}
