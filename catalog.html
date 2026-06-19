@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=6">
+<link rel="stylesheet" href="css/style.css?v=7">
 </head>
 <body>
 
@@ -37,8 +37,11 @@
   <p class="sec-sub">Ціни вказані з ПДВ. Для гуртових замовлень від 50 000 ₴ — індивідуальний прорахунок.</p>
 
   <div class="chips" id="chips"></div>
+  <div class="drill-crumb" id="drillCrumb" style="display:none"></div>
 
-  <div class="catalog-layout">
+  <div class="tiles-grid" id="tilesGrid" style="display:none"></div>
+
+  <div class="catalog-layout" id="catalogLayout" style="display:none">
     <aside class="subsidebar" id="subchips" style="display:none"></aside>
     <div class="catalog-main">
       <div class="catalog-toolbar">
@@ -72,13 +75,22 @@ if(!CATS.includes(activeCat)) activeCat = "Всі";
 let activeSubcat = "";
 let currentPage = 1;
 let filteredList = [];
+let view = "categories"; // categories | subgroups | products
 
 const chipsEl = document.getElementById("chips");
 const subchipsEl = document.getElementById("subchips");
+const tilesGridEl = document.getElementById("tilesGrid");
+const catalogLayoutEl = document.getElementById("catalogLayout");
+const drillCrumbEl = document.getElementById("drillCrumb");
 
 function getSubcats(cat){
   const s = new Set(PRODUCTS.filter(p=>p.cat===cat && p.subcat).map(p=>p.subcat));
   return [...s].sort((a,b)=>a.localeCompare(b,"uk"));
+}
+
+function getTileImg(filterFn){
+  const p = PRODUCTS.find(x=>filterFn(x) && x.img);
+  return p ? p.img : null;
 }
 
 function buildChips(){
@@ -92,11 +104,11 @@ function buildChips(){
     b.onclick = ()=>{
       activeCat = c; activeSubcat = ""; currentPage = 1;
       history.replaceState(null,"", c==="Всі" ? "catalog.html" : "catalog.html?cat="+encodeURIComponent(c));
-      buildChips(); buildSubchips(); render();
+      buildChips();
+      if(c==="Всі"){ showCategories(); } else { enterCategory(); }
     };
     chipsEl.appendChild(b);
   });
-  buildSubchips();
 }
 
 function buildSubchips(){
@@ -112,6 +124,85 @@ function buildSubchips(){
     b.onclick = ()=>{ activeSubcat=sc; currentPage=1; buildSubchips(); render(); };
     subchipsEl.appendChild(b);
   });
+}
+
+function renderTiles(items, onClick){
+  tilesGridEl.innerHTML = "";
+  items.forEach(it=>{
+    const div = document.createElement("div");
+    div.className = "tile";
+    div.innerHTML = (it.img
+      ? `<img src="${it.img}" alt="" loading="lazy">`
+      : `<div class="tile-fallback">${it.ico||"📦"}</div>`)
+      + `<div class="tile-label">${it.label}${it.count!=null?`<div class="tile-count">${it.count} товарів</div>`:""}</div>`;
+    div.onclick = ()=>onClick(it.value);
+    tilesGridEl.appendChild(div);
+  });
+}
+
+function setViewVisibility(){
+  const isTiles = (view==="categories" || view==="subgroups");
+  tilesGridEl.style.display = isTiles ? "" : "none";
+  catalogLayoutEl.style.display = isTiles ? "none" : "";
+  drillCrumbEl.style.display = (view==="categories") ? "none" : "";
+}
+
+function showCategories(){
+  view = "categories";
+  setViewVisibility();
+  drillCrumbEl.innerHTML = "";
+  const realCats = CATS.filter(c=>c!=="Всі").sort((a,b)=>a.localeCompare(b,"uk"));
+  const items = realCats.map(c=>({
+    value:c, label:c,
+    img:getTileImg(p=>p.cat===c),
+    ico:(PRODUCTS.find(p=>p.cat===c)||{}).ico,
+    count:PRODUCTS.filter(p=>p.cat===c).length
+  }));
+  renderTiles(items, (c)=>{
+    activeCat=c; activeSubcat=""; currentPage=1;
+    history.replaceState(null,"","catalog.html?cat="+encodeURIComponent(c));
+    buildChips(); enterCategory();
+  });
+}
+
+function enterCategory(){
+  const subcats = getSubcats(activeCat);
+  if(subcats.length){ showSubgroups(); } else { showProducts(); }
+}
+
+function showSubgroups(){
+  view = "subgroups";
+  setViewVisibility();
+  drillCrumbEl.innerHTML = `<a href="#" id="crumbAll">Каталог</a> / ${activeCat}`;
+  document.getElementById("crumbAll").onclick = (e)=>{
+    e.preventDefault();
+    activeCat="Всі"; activeSubcat=""; currentPage=1;
+    history.replaceState(null,"","catalog.html");
+    buildChips(); showCategories();
+  };
+  const subcats = getSubcats(activeCat);
+  const items = subcats.map(sc=>({
+    value:sc, label:sc,
+    img:getTileImg(p=>p.cat===activeCat && p.subcat===sc),
+    ico:(PRODUCTS.find(p=>p.cat===activeCat && p.subcat===sc)||{}).ico,
+    count:PRODUCTS.filter(p=>p.cat===activeCat && p.subcat===sc).length
+  }));
+  renderTiles(items, (sc)=>{ activeSubcat=sc; currentPage=1; showProducts(); });
+}
+
+function showProducts(){
+  view = "products";
+  setViewVisibility();
+  const parts = [`<a href="#" id="crumbAll">Каталог</a>`];
+  if(activeCat!=="Всі") parts.push(`<a href="#" id="crumbCat">${activeCat}</a>`);
+  if(activeSubcat) parts.push(activeSubcat);
+  drillCrumbEl.innerHTML = parts.join(" / ");
+  const crumbAll = document.getElementById("crumbAll");
+  if(crumbAll) crumbAll.onclick = (e)=>{ e.preventDefault(); activeCat="Всі"; activeSubcat=""; currentPage=1; history.replaceState(null,"","catalog.html"); buildChips(); showCategories(); };
+  const crumbCat = document.getElementById("crumbCat");
+  if(crumbCat) crumbCat.onclick = (e)=>{ e.preventDefault(); activeSubcat=""; currentPage=1; enterCategory(); };
+  buildSubchips();
+  render();
 }
 
 function render(){
@@ -160,10 +251,16 @@ function renderPager(totalPages, total){
 function goPage(p){ currentPage=p; render(); window.scrollTo({top:0,behavior:"smooth"}); }
 
 // Reset page on search/filter
-document.getElementById("searchInput").addEventListener("input", ()=>{ currentPage=1; render(); });
+document.getElementById("searchInput").addEventListener("input", ()=>{
+  currentPage=1;
+  const q = document.getElementById("searchInput").value.trim();
+  if(q){ if(view!=="products"){ showProducts(); } else { render(); } }
+  else { if(activeCat==="Всі"){ showCategories(); } else { enterCategory(); } }
+});
 document.getElementById("sortSel").addEventListener("change", ()=>{ currentPage=1; render(); });
 
-buildChips(); render();
+buildChips();
+if(activeCat==="Всі"){ showCategories(); } else { enterCategory(); }
 
 </script>
 </body>
