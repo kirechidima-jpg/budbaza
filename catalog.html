@@ -73,9 +73,10 @@ const PAGE_SIZE = 48;
 let activeCat = new URLSearchParams(location.search).get("cat") || "Всі";
 if(!CATS.includes(activeCat)) activeCat = "Всі";
 let activeSubcat = "";
+let activeSubsubcat = "";
 let currentPage = 1;
 let filteredList = [];
-let view = "categories"; // categories | subgroups | products
+let view = "categories"; // categories | subgroups | subsubgroups | products
 
 const chipsEl = document.getElementById("chips");
 const subchipsEl = document.getElementById("subchips");
@@ -85,6 +86,11 @@ const drillCrumbEl = document.getElementById("drillCrumb");
 
 function getSubcats(cat){
   const s = new Set(PRODUCTS.filter(p=>p.cat===cat && p.subcat).map(p=>p.subcat));
+  return [...s].sort((a,b)=>a.localeCompare(b,"uk"));
+}
+
+function getSubsubcats(cat, subcat){
+  const s = new Set(PRODUCTS.filter(p=>p.cat===cat && p.subcat===subcat && p.subsubcat).map(p=>p.subsubcat));
   return [...s].sort((a,b)=>a.localeCompare(b,"uk"));
 }
 
@@ -112,6 +118,20 @@ function buildChips(){
 }
 
 function buildSubchips(){
+  const subsubcats = activeSubcat ? getSubsubcats(activeCat, activeSubcat) : [];
+  if(subsubcats.length){
+    subchipsEl.style.display = "";
+    subchipsEl.innerHTML = `<div class="subsidebar-title">${activeSubcat}</div>`;
+    subsubcats.forEach(ssc=>{
+      const b = document.createElement("button");
+      b.className = "chip-sub" + (ssc===activeSubsubcat ? " active" : "");
+      const cnt = PRODUCTS.filter(p=>p.cat===activeCat && p.subcat===activeSubcat && p.subsubcat===ssc).length;
+      b.textContent = ssc + (cnt ? ` (${cnt})` : "");
+      b.onclick = ()=>{ activeSubsubcat=ssc; currentPage=1; buildSubchips(); render(); };
+      subchipsEl.appendChild(b);
+    });
+    return;
+  }
   const subcats = getSubcats(activeCat);
   if(!subcats.length){ subchipsEl.style.display="none"; subchipsEl.innerHTML=""; return; }
   subchipsEl.style.display = "";
@@ -121,7 +141,7 @@ function buildSubchips(){
     b.className = "chip-sub" + (sc===activeSubcat ? " active" : "");
     const cnt = PRODUCTS.filter(p=>p.cat===activeCat && p.subcat===sc).length;
     b.textContent = sc + (cnt ? ` (${cnt})` : "");
-    b.onclick = ()=>{ activeSubcat=sc; currentPage=1; buildSubchips(); render(); };
+    b.onclick = ()=>{ activeSubcat=sc; activeSubsubcat=""; currentPage=1; enterSubcat(); };
     subchipsEl.appendChild(b);
   });
 }
@@ -141,7 +161,7 @@ function renderTiles(items, onClick){
 }
 
 function setViewVisibility(){
-  const isTiles = (view==="categories" || view==="subgroups");
+  const isTiles = (view==="categories" || view==="subgroups" || view==="subsubgroups");
   tilesGridEl.style.display = isTiles ? "" : "none";
   catalogLayoutEl.style.display = isTiles ? "none" : "";
   drillCrumbEl.style.display = (view==="categories") ? "none" : "";
@@ -187,7 +207,37 @@ function showSubgroups(){
     ico:(PRODUCTS.find(p=>p.cat===activeCat && p.subcat===sc)||{}).ico,
     count:PRODUCTS.filter(p=>p.cat===activeCat && p.subcat===sc).length
   }));
-  renderTiles(items, (sc)=>{ activeSubcat=sc; currentPage=1; showProducts(); });
+  renderTiles(items, (sc)=>{ activeSubcat=sc; activeSubsubcat=""; currentPage=1; enterSubcat(); });
+}
+
+function enterSubcat(){
+  const subsubcats = getSubsubcats(activeCat, activeSubcat);
+  if(subsubcats.length){ showSubsubgroups(); } else { showProducts(); }
+}
+
+function showSubsubgroups(){
+  view = "subsubgroups";
+  setViewVisibility();
+  drillCrumbEl.innerHTML = `<a href="#" id="crumbAll">Каталог</a> / <a href="#" id="crumbCat">${activeCat}</a> / ${activeSubcat}`;
+  document.getElementById("crumbAll").onclick = (e)=>{
+    e.preventDefault();
+    activeCat="Всі"; activeSubcat=""; activeSubsubcat=""; currentPage=1;
+    history.replaceState(null,"","catalog.html");
+    buildChips(); showCategories();
+  };
+  document.getElementById("crumbCat").onclick = (e)=>{
+    e.preventDefault();
+    activeSubcat=""; activeSubsubcat=""; currentPage=1;
+    enterCategory();
+  };
+  const subsubcats = getSubsubcats(activeCat, activeSubcat);
+  const items = subsubcats.map(ssc=>({
+    value:ssc, label:ssc,
+    img:getTileImg(p=>p.cat===activeCat && p.subcat===activeSubcat && p.subsubcat===ssc),
+    ico:(PRODUCTS.find(p=>p.cat===activeCat && p.subcat===activeSubcat && p.subsubcat===ssc)||{}).ico,
+    count:PRODUCTS.filter(p=>p.cat===activeCat && p.subcat===activeSubcat && p.subsubcat===ssc).length
+  }));
+  renderTiles(items, (ssc)=>{ activeSubsubcat=ssc; currentPage=1; showProducts(); });
 }
 
 function showProducts(){
@@ -195,12 +245,15 @@ function showProducts(){
   setViewVisibility();
   const parts = [`<a href="#" id="crumbAll">Каталог</a>`];
   if(activeCat!=="Всі") parts.push(`<a href="#" id="crumbCat">${activeCat}</a>`);
-  if(activeSubcat) parts.push(activeSubcat);
+  if(activeSubcat) parts.push(activeSubsubcat ? `<a href="#" id="crumbSubcat">${activeSubcat}</a>` : activeSubcat);
+  if(activeSubsubcat) parts.push(activeSubsubcat);
   drillCrumbEl.innerHTML = parts.join(" / ");
   const crumbAll = document.getElementById("crumbAll");
-  if(crumbAll) crumbAll.onclick = (e)=>{ e.preventDefault(); activeCat="Всі"; activeSubcat=""; currentPage=1; history.replaceState(null,"","catalog.html"); buildChips(); showCategories(); };
+  if(crumbAll) crumbAll.onclick = (e)=>{ e.preventDefault(); activeCat="Всі"; activeSubcat=""; activeSubsubcat=""; currentPage=1; history.replaceState(null,"","catalog.html"); buildChips(); showCategories(); };
   const crumbCat = document.getElementById("crumbCat");
-  if(crumbCat) crumbCat.onclick = (e)=>{ e.preventDefault(); activeSubcat=""; currentPage=1; enterCategory(); };
+  if(crumbCat) crumbCat.onclick = (e)=>{ e.preventDefault(); activeSubcat=""; activeSubsubcat=""; currentPage=1; enterCategory(); };
+  const crumbSubcat = document.getElementById("crumbSubcat");
+  if(crumbSubcat) crumbSubcat.onclick = (e)=>{ e.preventDefault(); activeSubsubcat=""; currentPage=1; enterSubcat(); };
   buildSubchips();
   render();
 }
@@ -211,6 +264,7 @@ function render(){
   filteredList = PRODUCTS.filter(p=>
     (activeCat==="Всі" || p.cat===activeCat) &&
     (!activeSubcat || p.subcat===activeSubcat) &&
+    (!activeSubsubcat || p.subsubcat===activeSubsubcat) &&
     (!q || (p.name+" "+(p.key||"")+" "+p.cat).toLowerCase().includes(q))
   );
   filteredList.sort((a,b)=>a.name.localeCompare(b.name,"uk"));
