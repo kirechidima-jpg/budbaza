@@ -103,11 +103,6 @@ function buildSubchips(){
   if(!subcats.length){ subchipsEl.style.display="none"; subchipsEl.innerHTML=""; return; }
   subchipsEl.style.display = "";
   subchipsEl.innerHTML = "<div class=\"subsidebar-title\">Підгрупи</div>";
-  const all = document.createElement("button");
-  all.className = "chip-sub" + (!activeSubcat ? " active" : "");
-  all.textContent = "Усі підгрупи";
-  all.onclick = ()=>{ activeSubcat=""; currentPage=1; buildSubchips(); render(); };
-  subchipsEl.appendChild(all);
   subcats.forEach(sc=>{
     const b = document.createElement("button");
     b.className = "chip-sub" + (sc===activeSubcat ? " active" : "");
