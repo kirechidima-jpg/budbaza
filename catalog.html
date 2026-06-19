@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=5">
+<link rel="stylesheet" href="css/style.css?v=6">
 </head>
 <body>
 
@@ -27,27 +27,28 @@
 
 <main>
   <div class="breadcrumbs"><a href="index.html">Головна</a> / Каталог</div>
-  <div class="sec-head"><span class="tag">Каталог</span><h2>Матеріали в наявності</h2></div>
-  <p class="sec-sub">Ціни вказані з ПДВ. Для гуртових замовлень від 50 000 ₴ — індивідуальний прорахунок.</p>
-
-  <div class="toolbar">
+  <div class="sec-head-row">
+    <div class="sec-head"><span class="tag">Каталог</span><h2>Матеріали в наявності</h2></div>
     <div class="search">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
       <input id="searchInput" type="text" placeholder="Пошук: цемент, газоблок, арматура...">
     </div>
-    <select class="sort" id="sortSel">
-      <option value="pop">За популярністю</option>
-      <option value="cheap">Спочатку дешевші</option>
-      <option value="exp">Спочатку дорожчі</option>
-      <option value="name">За назвою</option>
-    </select>
   </div>
+  <p class="sec-sub">Ціни вказані з ПДВ. Для гуртових замовлень від 50 000 ₴ — індивідуальний прорахунок.</p>
 
   <div class="chips" id="chips"></div>
 
   <div class="catalog-layout">
     <aside class="subsidebar" id="subchips" style="display:none"></aside>
     <div class="catalog-main">
+      <div class="catalog-toolbar">
+        <select class="sort" id="sortSel">
+          <option value="pop">За популярністю</option>
+          <option value="cheap">Спочатку дешевші</option>
+          <option value="exp">Спочатку дорожчі</option>
+          <option value="name">За назвою</option>
+        </select>
+      </div>
       <div class="grid" id="grid"></div>
     </div>
   </div>
