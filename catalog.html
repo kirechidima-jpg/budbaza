@@ -108,6 +108,7 @@ function buildChips(){
     const cnt = c==="Всі" ? PRODUCTS.length : PRODUCTS.filter(p=>p.cat===c).length;
     b.textContent = c + (cnt ? ` (${cnt})` : "");
     b.onclick = ()=>{
+      clearSearch();
       activeCat = c; activeSubcat = ""; currentPage = 1;
       history.replaceState(null,"", c==="Всі" ? "catalog.html" : "catalog.html?cat="+encodeURIComponent(c));
       buildChips();
@@ -127,7 +128,7 @@ function buildSubchips(){
       b.className = "chip-sub" + (ssc===activeSubsubcat ? " active" : "");
       const cnt = PRODUCTS.filter(p=>p.cat===activeCat && p.subcat===activeSubcat && p.subsubcat===ssc).length;
       b.textContent = ssc + (cnt ? ` (${cnt})` : "");
-      b.onclick = ()=>{ activeSubsubcat=ssc; currentPage=1; buildSubchips(); render(); };
+      b.onclick = ()=>{ clearSearch(); activeSubsubcat=ssc; currentPage=1; buildSubchips(); render(); };
       subchipsEl.appendChild(b);
     });
     return;
@@ -141,9 +142,13 @@ function buildSubchips(){
     b.className = "chip-sub" + (sc===activeSubcat ? " active" : "");
     const cnt = PRODUCTS.filter(p=>p.cat===activeCat && p.subcat===sc).length;
     b.textContent = sc + (cnt ? ` (${cnt})` : "");
-    b.onclick = ()=>{ activeSubcat=sc; activeSubsubcat=""; currentPage=1; enterSubcat(); };
+    b.onclick = ()=>{ clearSearch(); activeSubcat=sc; activeSubsubcat=""; currentPage=1; enterSubcat(); };
     subchipsEl.appendChild(b);
   });
+}
+
+function clearSearch(){
+  document.getElementById("searchInput").value = "";
 }
 
 function renderTiles(items, onClick){
@@ -155,7 +160,7 @@ function renderTiles(items, onClick){
       ? `<img src="${it.img}" alt="" loading="lazy">`
       : `<div class="tile-fallback">${it.ico||"📦"}</div>`)
       + `<div class="tile-label">${it.label}${it.count!=null?`<div class="tile-count">${it.count} товарів</div>`:""}</div>`;
-    div.onclick = ()=>onClick(it.value);
+    div.onclick = ()=>{ clearSearch(); onClick(it.value); };
     tilesGridEl.appendChild(div);
   });
 }
@@ -195,7 +200,7 @@ function showSubgroups(){
   setViewVisibility();
   drillCrumbEl.innerHTML = `<a href="#" id="crumbAll">Каталог</a> / ${activeCat}`;
   document.getElementById("crumbAll").onclick = (e)=>{
-    e.preventDefault();
+    e.preventDefault(); clearSearch();
     activeCat="Всі"; activeSubcat=""; currentPage=1;
     history.replaceState(null,"","catalog.html");
     buildChips(); showCategories();
@@ -220,13 +225,13 @@ function showSubsubgroups(){
   setViewVisibility();
   drillCrumbEl.innerHTML = `<a href="#" id="crumbAll">Каталог</a> / <a href="#" id="crumbCat">${activeCat}</a> / ${activeSubcat}`;
   document.getElementById("crumbAll").onclick = (e)=>{
-    e.preventDefault();
+    e.preventDefault(); clearSearch();
     activeCat="Всі"; activeSubcat=""; activeSubsubcat=""; currentPage=1;
     history.replaceState(null,"","catalog.html");
     buildChips(); showCategories();
   };
   document.getElementById("crumbCat").onclick = (e)=>{
-    e.preventDefault();
+    e.preventDefault(); clearSearch();
     activeSubcat=""; activeSubsubcat=""; currentPage=1;
     enterCategory();
   };
@@ -249,11 +254,11 @@ function showProducts(){
   if(activeSubsubcat) parts.push(activeSubsubcat);
   drillCrumbEl.innerHTML = parts.join(" / ");
   const crumbAll = document.getElementById("crumbAll");
-  if(crumbAll) crumbAll.onclick = (e)=>{ e.preventDefault(); activeCat="Всі"; activeSubcat=""; activeSubsubcat=""; currentPage=1; history.replaceState(null,"","catalog.html"); buildChips(); showCategories(); };
+  if(crumbAll) crumbAll.onclick = (e)=>{ e.preventDefault(); clearSearch(); activeCat="Всі"; activeSubcat=""; activeSubsubcat=""; currentPage=1; history.replaceState(null,"","catalog.html"); buildChips(); showCategories(); };
   const crumbCat = document.getElementById("crumbCat");
-  if(crumbCat) crumbCat.onclick = (e)=>{ e.preventDefault(); activeSubcat=""; activeSubsubcat=""; currentPage=1; enterCategory(); };
+  if(crumbCat) crumbCat.onclick = (e)=>{ e.preventDefault(); clearSearch(); activeSubcat=""; activeSubsubcat=""; currentPage=1; enterCategory(); };
   const crumbSubcat = document.getElementById("crumbSubcat");
-  if(crumbSubcat) crumbSubcat.onclick = (e)=>{ e.preventDefault(); activeSubsubcat=""; currentPage=1; enterSubcat(); };
+  if(crumbSubcat) crumbSubcat.onclick = (e)=>{ e.preventDefault(); clearSearch(); activeSubsubcat=""; currentPage=1; enterSubcat(); };
   buildSubchips();
   render();
 }
