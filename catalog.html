@@ -214,6 +214,23 @@ function renderMain(){
   updateBreadcrumb();
   const q = document.getElementById("searchInput").value.trim();
 
+  if(!q && activeCat==="Всі"){
+    tilesGridEl.style.display = ""; catalogLayoutEl.style.display = "none";
+    const realCats = CATS.filter(c=>c!=="Всі").sort((a,b)=>a.localeCompare(b,"uk"));
+    const items = realCats.map(c=>({
+      value:c, label:c,
+      img:getTileImg(p=>p.cat===c),
+      ico:(PRODUCTS.find(p=>p.cat===c)||{}).ico,
+      count:PRODUCTS.filter(p=>p.cat===c).length
+    }));
+    renderTiles(items, (c)=>{
+      activeCat=c; activeSubcat=""; activeSubsubcat=""; currentPage=1;
+      history.replaceState(null,"","catalog.html?cat="+encodeURIComponent(c));
+      renderAll();
+    });
+    return;
+  }
+
   if(!q && activeCat!=="Всі"){
     if(!activeSubcat){
       const subcats = getSubcats(activeCat);
