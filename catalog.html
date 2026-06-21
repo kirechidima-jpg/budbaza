@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=7">
+<link rel="stylesheet" href="css/style.css?v=8">
 </head>
 <body>
 
@@ -36,23 +36,23 @@
   </div>
   <p class="sec-sub">Ціни вказані з ПДВ. Для гуртових замовлень від 50 000 ₴ — індивідуальний прорахунок.</p>
 
-  <div class="chips" id="chips"></div>
   <div class="drill-crumb" id="drillCrumb" style="display:none"></div>
 
-  <div class="tiles-grid" id="tilesGrid" style="display:none"></div>
-
-  <div class="catalog-layout" id="catalogLayout" style="display:none">
-    <aside class="subsidebar" id="subchips" style="display:none"></aside>
-    <div class="catalog-main">
-      <div class="catalog-toolbar">
-        <select class="sort" id="sortSel">
-          <option value="pop">За популярністю</option>
-          <option value="cheap">Спочатку дешевші</option>
-          <option value="exp">Спочатку дорожчі</option>
-          <option value="name">За назвою</option>
-        </select>
+  <div class="catalog-shell">
+    <aside class="cat-tree" id="catTree"></aside>
+    <div class="catalog-main-area">
+      <div class="tiles-grid" id="tilesGrid" style="display:none"></div>
+      <div class="catalog-layout" id="catalogLayout" style="display:none">
+        <div class="catalog-toolbar">
+          <select class="sort" id="sortSel">
+            <option value="pop">За популярністю</option>
+            <option value="cheap">Спочатку дешевші</option>
+            <option value="exp">Спочатку дорожчі</option>
+            <option value="name">За назвою</option>
+          </select>
+        </div>
+        <div class="grid" id="grid"></div>
       </div>
-      <div class="grid" id="grid"></div>
     </div>
   </div>
 </main>
@@ -76,10 +76,8 @@ let activeSubcat = "";
 let activeSubsubcat = "";
 let currentPage = 1;
 let filteredList = [];
-let view = "categories"; // categories | subgroups | subsubgroups | products
 
-const chipsEl = document.getElementById("chips");
-const subchipsEl = document.getElementById("subchips");
+const catTreeEl = document.getElementById("catTree");
 const tilesGridEl = document.getElementById("tilesGrid");
 const catalogLayoutEl = document.getElementById("catalogLayout");
 const drillCrumbEl = document.getElementById("drillCrumb");
@@ -99,58 +97,88 @@ function getTileImg(filterFn){
   return p ? p.img : null;
 }
 
-function buildChips(){
-  chipsEl.innerHTML = "";
-  const sortedCats = ["Всі", ...CATS.filter(c=>c!=="Всі").sort((a,b)=>a.localeCompare(b,"uk"))];
-  sortedCats.forEach(c=>{
-    const b = document.createElement("button");
-    b.className = "chip" + (c===activeCat ? " active" : "");
-    const cnt = c==="Всі" ? PRODUCTS.length : PRODUCTS.filter(p=>p.cat===c).length;
-    b.textContent = c + (cnt ? ` (${cnt})` : "");
-    b.onclick = ()=>{
-      clearSearch();
-      activeCat = c; activeSubcat = ""; currentPage = 1;
-      history.replaceState(null,"", c==="Всі" ? "catalog.html" : "catalog.html?cat="+encodeURIComponent(c));
-      buildChips();
-      if(c==="Всі"){ showCategories(); } else { enterCategory(); }
-    };
-    chipsEl.appendChild(b);
-  });
-}
-
-function buildSubchips(){
-  const subsubcats = activeSubcat ? getSubsubcats(activeCat, activeSubcat) : [];
-  if(subsubcats.length){
-    subchipsEl.style.display = "";
-    subchipsEl.innerHTML = `<div class="subsidebar-title">${activeSubcat}</div>`;
-    subsubcats.forEach(ssc=>{
-      const b = document.createElement("button");
-      b.className = "chip-sub" + (ssc===activeSubsubcat ? " active" : "");
-      const cnt = PRODUCTS.filter(p=>p.cat===activeCat && p.subcat===activeSubcat && p.subsubcat===ssc).length;
-      b.textContent = ssc + (cnt ? ` (${cnt})` : "");
-      b.onclick = ()=>{ clearSearch(); activeSubsubcat=ssc; currentPage=1; buildSubchips(); render(); };
-      subchipsEl.appendChild(b);
-    });
-    return;
-  }
-  const subcats = getSubcats(activeCat);
-  if(!subcats.length){ subchipsEl.style.display="none"; subchipsEl.innerHTML=""; return; }
-  subchipsEl.style.display = "";
-  subchipsEl.innerHTML = "<div class=\"subsidebar-title\">Підгрупи</div>";
-  subcats.forEach(sc=>{
-    const b = document.createElement("button");
-    b.className = "chip-sub" + (sc===activeSubcat ? " active" : "");
-    const cnt = PRODUCTS.filter(p=>p.cat===activeCat && p.subcat===sc).length;
-    b.textContent = sc + (cnt ? ` (${cnt})` : "");
-    b.onclick = ()=>{ clearSearch(); activeSubcat=sc; activeSubsubcat=""; currentPage=1; enterSubcat(); };
-    subchipsEl.appendChild(b);
-  });
-}
-
 function clearSearch(){
   document.getElementById("searchInput").value = "";
 }
 
+// ───── Persistent left tree: Категорії → Підгрупи → Під-підгрупи ─────
+function renderTree(){
+  catTreeEl.innerHTML = "";
+
+  const allBtn = document.createElement("button");
+  allBtn.className = "tree-cat" + (activeCat==="Всі" ? " active" : "");
+  allBtn.textContent = `Всі (${PRODUCTS.length})`;
+  allBtn.onclick = ()=>{
+    clearSearch();
+    activeCat="Всі"; activeSubcat=""; activeSubsubcat=""; currentPage=1;
+    history.replaceState(null,"","catalog.html");
+    renderAll();
+  };
+  catTreeEl.appendChild(allBtn);
+
+  const realCats = CATS.filter(c=>c!=="Всі").sort((a,b)=>a.localeCompare(b,"uk"));
+  realCats.forEach(c=>{
+    const node = document.createElement("div");
+    node.className = "tree-node";
+    const cnt = PRODUCTS.filter(p=>p.cat===c).length;
+    const catBtn = document.createElement("button");
+    catBtn.className = "tree-cat" + (c===activeCat ? " active" : "");
+    catBtn.textContent = `${c} (${cnt})`;
+    catBtn.onclick = ()=>{
+      clearSearch();
+      activeCat=c; activeSubcat=""; activeSubsubcat=""; currentPage=1;
+      history.replaceState(null,"","catalog.html?cat="+encodeURIComponent(c));
+      renderAll();
+    };
+    node.appendChild(catBtn);
+
+    if(c===activeCat){
+      const subcats = getSubcats(c);
+      if(subcats.length){
+        const subWrap = document.createElement("div");
+        subWrap.className = "tree-children";
+        subcats.forEach(sc=>{
+          const subNode = document.createElement("div");
+          subNode.className = "tree-node";
+          const scnt = PRODUCTS.filter(p=>p.cat===c && p.subcat===sc).length;
+          const subBtn = document.createElement("button");
+          subBtn.className = "tree-sub" + (sc===activeSubcat ? " active" : "");
+          subBtn.textContent = `${sc} (${scnt})`;
+          subBtn.onclick = ()=>{
+            clearSearch();
+            if(sc===activeSubcat){ activeSubsubcat=""; }
+            else { activeSubcat=sc; activeSubsubcat=""; }
+            currentPage=1;
+            renderAll();
+          };
+          subNode.appendChild(subBtn);
+
+          if(sc===activeSubcat){
+            const subsubcats = getSubsubcats(c, sc);
+            if(subsubcats.length){
+              const ssWrap = document.createElement("div");
+              ssWrap.className = "tree-children";
+              subsubcats.forEach(ssc=>{
+                const sscnt = PRODUCTS.filter(p=>p.cat===c && p.subcat===sc && p.subsubcat===ssc).length;
+                const ssBtn = document.createElement("button");
+                ssBtn.className = "tree-subsub" + (ssc===activeSubsubcat ? " active" : "");
+                ssBtn.textContent = `${ssc} (${sscnt})`;
+                ssBtn.onclick = ()=>{ clearSearch(); activeSubsubcat = (ssc===activeSubsubcat ? "" : ssc); currentPage=1; renderAll(); };
+                ssWrap.appendChild(ssBtn);
+              });
+              subNode.appendChild(ssWrap);
+            }
+          }
+          subWrap.appendChild(subNode);
+        });
+        node.appendChild(subWrap);
+      }
+    }
+    catTreeEl.appendChild(node);
+  });
+}
+
+// ───── Main area: tiles (next level) or products (leaf level) ─────
 function renderTiles(items, onClick){
   tilesGridEl.innerHTML = "";
   items.forEach(it=>{
@@ -165,102 +193,64 @@ function renderTiles(items, onClick){
   });
 }
 
-function setViewVisibility(){
-  const isTiles = (view==="categories" || view==="subgroups" || view==="subsubgroups");
-  tilesGridEl.style.display = isTiles ? "" : "none";
-  catalogLayoutEl.style.display = isTiles ? "none" : "";
-  drillCrumbEl.style.display = (view==="categories") ? "none" : "";
-}
-
-function showCategories(){
-  view = "categories";
-  setViewVisibility();
-  drillCrumbEl.innerHTML = "";
-  const realCats = CATS.filter(c=>c!=="Всі").sort((a,b)=>a.localeCompare(b,"uk"));
-  const items = realCats.map(c=>({
-    value:c, label:c,
-    img:getTileImg(p=>p.cat===c),
-    ico:(PRODUCTS.find(p=>p.cat===c)||{}).ico,
-    count:PRODUCTS.filter(p=>p.cat===c).length
-  }));
-  renderTiles(items, (c)=>{
-    activeCat=c; activeSubcat=""; currentPage=1;
-    history.replaceState(null,"","catalog.html?cat="+encodeURIComponent(c));
-    buildChips(); enterCategory();
-  });
-}
-
-function enterCategory(){
-  const subcats = getSubcats(activeCat);
-  if(subcats.length){ showSubgroups(); } else { showProducts(); }
-}
-
-function showSubgroups(){
-  view = "subgroups";
-  setViewVisibility();
-  drillCrumbEl.innerHTML = `<a href="#" id="crumbAll">Каталог</a> / ${activeCat}`;
-  document.getElementById("crumbAll").onclick = (e)=>{
-    e.preventDefault(); clearSearch();
-    activeCat="Всі"; activeSubcat=""; currentPage=1;
-    history.replaceState(null,"","catalog.html");
-    buildChips(); showCategories();
-  };
-  const subcats = getSubcats(activeCat);
-  const items = subcats.map(sc=>({
-    value:sc, label:sc,
-    img:getTileImg(p=>p.cat===activeCat && p.subcat===sc),
-    ico:(PRODUCTS.find(p=>p.cat===activeCat && p.subcat===sc)||{}).ico,
-    count:PRODUCTS.filter(p=>p.cat===activeCat && p.subcat===sc).length
-  }));
-  renderTiles(items, (sc)=>{ activeSubcat=sc; activeSubsubcat=""; currentPage=1; enterSubcat(); });
-}
-
-function enterSubcat(){
-  const subsubcats = getSubsubcats(activeCat, activeSubcat);
-  if(subsubcats.length){ showSubsubgroups(); } else { showProducts(); }
-}
-
-function showSubsubgroups(){
-  view = "subsubgroups";
-  setViewVisibility();
-  drillCrumbEl.innerHTML = `<a href="#" id="crumbAll">Каталог</a> / <a href="#" id="crumbCat">${activeCat}</a> / ${activeSubcat}`;
-  document.getElementById("crumbAll").onclick = (e)=>{
-    e.preventDefault(); clearSearch();
-    activeCat="Всі"; activeSubcat=""; activeSubsubcat=""; currentPage=1;
-    history.replaceState(null,"","catalog.html");
-    buildChips(); showCategories();
-  };
-  document.getElementById("crumbCat").onclick = (e)=>{
-    e.preventDefault(); clearSearch();
-    activeSubcat=""; activeSubsubcat=""; currentPage=1;
-    enterCategory();
-  };
-  const subsubcats = getSubsubcats(activeCat, activeSubcat);
-  const items = subsubcats.map(ssc=>({
-    value:ssc, label:ssc,
-    img:getTileImg(p=>p.cat===activeCat && p.subcat===activeSubcat && p.subsubcat===ssc),
-    ico:(PRODUCTS.find(p=>p.cat===activeCat && p.subcat===activeSubcat && p.subsubcat===ssc)||{}).ico,
-    count:PRODUCTS.filter(p=>p.cat===activeCat && p.subcat===activeSubcat && p.subsubcat===ssc).length
-  }));
-  renderTiles(items, (ssc)=>{ activeSubsubcat=ssc; currentPage=1; showProducts(); });
-}
-
-function showProducts(){
-  view = "products";
-  setViewVisibility();
+function updateBreadcrumb(){
+  const q = document.getElementById("searchInput").value.trim();
+  if(activeCat==="Всі" && !q){ drillCrumbEl.style.display="none"; drillCrumbEl.innerHTML=""; return; }
+  drillCrumbEl.style.display = "";
   const parts = [`<a href="#" id="crumbAll">Каталог</a>`];
-  if(activeCat!=="Всі") parts.push(`<a href="#" id="crumbCat">${activeCat}</a>`);
+  if(activeCat!=="Всі") parts.push(activeSubcat ? `<a href="#" id="crumbCat">${activeCat}</a>` : activeCat);
   if(activeSubcat) parts.push(activeSubsubcat ? `<a href="#" id="crumbSubcat">${activeSubcat}</a>` : activeSubcat);
   if(activeSubsubcat) parts.push(activeSubsubcat);
   drillCrumbEl.innerHTML = parts.join(" / ");
   const crumbAll = document.getElementById("crumbAll");
-  if(crumbAll) crumbAll.onclick = (e)=>{ e.preventDefault(); clearSearch(); activeCat="Всі"; activeSubcat=""; activeSubsubcat=""; currentPage=1; history.replaceState(null,"","catalog.html"); buildChips(); showCategories(); };
+  if(crumbAll) crumbAll.onclick = (e)=>{ e.preventDefault(); clearSearch(); activeCat="Всі"; activeSubcat=""; activeSubsubcat=""; currentPage=1; history.replaceState(null,"","catalog.html"); renderAll(); };
   const crumbCat = document.getElementById("crumbCat");
-  if(crumbCat) crumbCat.onclick = (e)=>{ e.preventDefault(); clearSearch(); activeSubcat=""; activeSubsubcat=""; currentPage=1; enterCategory(); };
+  if(crumbCat) crumbCat.onclick = (e)=>{ e.preventDefault(); clearSearch(); activeSubcat=""; activeSubsubcat=""; currentPage=1; renderAll(); };
   const crumbSubcat = document.getElementById("crumbSubcat");
-  if(crumbSubcat) crumbSubcat.onclick = (e)=>{ e.preventDefault(); clearSearch(); activeSubsubcat=""; currentPage=1; enterSubcat(); };
-  buildSubchips();
+  if(crumbSubcat) crumbSubcat.onclick = (e)=>{ e.preventDefault(); clearSearch(); activeSubsubcat=""; currentPage=1; renderAll(); };
+}
+
+function renderMain(){
+  updateBreadcrumb();
+  const q = document.getElementById("searchInput").value.trim();
+
+  if(!q && activeCat!=="Всі"){
+    if(!activeSubcat){
+      const subcats = getSubcats(activeCat);
+      if(subcats.length){
+        tilesGridEl.style.display = ""; catalogLayoutEl.style.display = "none";
+        const items = subcats.map(sc=>({
+          value:sc, label:sc,
+          img:getTileImg(p=>p.cat===activeCat && p.subcat===sc),
+          ico:(PRODUCTS.find(p=>p.cat===activeCat && p.subcat===sc)||{}).ico,
+          count:PRODUCTS.filter(p=>p.cat===activeCat && p.subcat===sc).length
+        }));
+        renderTiles(items, (sc)=>{ activeSubcat=sc; activeSubsubcat=""; currentPage=1; renderAll(); });
+        return;
+      }
+    } else if(!activeSubsubcat){
+      const subsubcats = getSubsubcats(activeCat, activeSubcat);
+      if(subsubcats.length){
+        tilesGridEl.style.display = ""; catalogLayoutEl.style.display = "none";
+        const items = subsubcats.map(ssc=>({
+          value:ssc, label:ssc,
+          img:getTileImg(p=>p.cat===activeCat && p.subcat===activeSubcat && p.subsubcat===ssc),
+          ico:(PRODUCTS.find(p=>p.cat===activeCat && p.subcat===activeSubcat && p.subsubcat===ssc)||{}).ico,
+          count:PRODUCTS.filter(p=>p.cat===activeCat && p.subcat===activeSubcat && p.subsubcat===ssc).length
+        }));
+        renderTiles(items, (ssc)=>{ activeSubsubcat=ssc; currentPage=1; renderAll(); });
+        return;
+      }
+    }
+  }
+
+  tilesGridEl.style.display = "none"; catalogLayoutEl.style.display = "";
   render();
+}
+
+function renderAll(){
+  renderTree();
+  renderMain();
 }
 
 function render(){
@@ -310,16 +300,10 @@ function renderPager(totalPages, total){
 function goPage(p){ currentPage=p; render(); window.scrollTo({top:0,behavior:"smooth"}); }
 
 // Reset page on search/filter
-document.getElementById("searchInput").addEventListener("input", ()=>{
-  currentPage=1;
-  const q = document.getElementById("searchInput").value.trim();
-  if(q){ if(view!=="products"){ showProducts(); } else { render(); } }
-  else { if(activeCat==="Всі"){ showCategories(); } else { enterCategory(); } }
-});
+document.getElementById("searchInput").addEventListener("input", ()=>{ currentPage=1; renderMain(); });
 document.getElementById("sortSel").addEventListener("change", ()=>{ currentPage=1; render(); });
 
-buildChips();
-if(activeCat==="Всі"){ showCategories(); } else { enterCategory(); }
+renderAll();
 
 </script>
 </body>
