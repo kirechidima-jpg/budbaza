@@ -270,7 +270,7 @@ function render(){
     (activeCat==="Всі" || p.cat===activeCat) &&
     (!activeSubcat || p.subcat===activeSubcat) &&
     (!activeSubsubcat || p.subsubcat===activeSubsubcat) &&
-    (!q || (p.name+" "+(p.key||"")+" "+p.cat).toLowerCase().includes(q))
+    (!q || (p.name+" "+(p.key||"")+" "+p.cat+" "+(p.meta||"")).toLowerCase().includes(q))
   );
   filteredList.sort((a,b)=>a.name.localeCompare(b.name,"uk"));
   if(sort==="cheap") filteredList.sort((a,b)=>a.price-b.price);
