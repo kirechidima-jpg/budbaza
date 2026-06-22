@@ -224,9 +224,9 @@ function updateBreadcrumb(){
 function renderMain(){
   updateBreadcrumb();
   const q = document.getElementById("searchInput").value.trim();
+  let tilesShown = false;
 
   if(!q && activeCat==="Всі"){
-    tilesGridEl.style.display = ""; catalogLayoutEl.style.display = "none";
     const realCats = CATS.filter(c=>c!=="Всі").sort((a,b)=>a.localeCompare(b,"uk"));
     const items = realCats.map(c=>({
       value:c, label:c,
@@ -239,40 +239,35 @@ function renderMain(){
       syncUrl();
       renderAll();
     });
-    return;
-  }
-
-  if(!q && activeCat!=="Всі"){
-    if(!activeSubcat){
-      const subcats = getSubcats(activeCat);
-      if(subcats.length){
-        tilesGridEl.style.display = ""; catalogLayoutEl.style.display = "none";
-        const items = subcats.map(sc=>({
-          value:sc, label:sc,
-          img:getTileImg(p=>p.cat===activeCat && p.subcat===sc),
-          ico:(PRODUCTS.find(p=>p.cat===activeCat && p.subcat===sc)||{}).ico,
-          count:PRODUCTS.filter(p=>p.cat===activeCat && p.subcat===sc).length
-        }));
-        renderTiles(items, (sc)=>{ activeSubcat=sc; activeSubsubcat=""; currentPage=1; syncUrl(); renderAll(); });
-        return;
-      }
-    } else if(!activeSubsubcat){
-      const subsubcats = getSubsubcats(activeCat, activeSubcat);
-      if(subsubcats.length){
-        tilesGridEl.style.display = ""; catalogLayoutEl.style.display = "none";
-        const items = subsubcats.map(ssc=>({
-          value:ssc, label:ssc,
-          img:getTileImg(p=>p.cat===activeCat && p.subcat===activeSubcat && p.subsubcat===ssc),
-          ico:(PRODUCTS.find(p=>p.cat===activeCat && p.subcat===activeSubcat && p.subsubcat===ssc)||{}).ico,
-          count:PRODUCTS.filter(p=>p.cat===activeCat && p.subcat===activeSubcat && p.subsubcat===ssc).length
-        }));
-        renderTiles(items, (ssc)=>{ activeSubsubcat=ssc; currentPage=1; syncUrl(); renderAll(); });
-        return;
-      }
+    tilesShown = true;
+  } else if(!q && activeCat!=="Всі" && !activeSubcat){
+    const subcats = getSubcats(activeCat);
+    if(subcats.length){
+      const items = subcats.map(sc=>({
+        value:sc, label:sc,
+        img:getTileImg(p=>p.cat===activeCat && p.subcat===sc),
+        ico:(PRODUCTS.find(p=>p.cat===activeCat && p.subcat===sc)||{}).ico,
+        count:PRODUCTS.filter(p=>p.cat===activeCat && p.subcat===sc).length
+      }));
+      renderTiles(items, (sc)=>{ activeSubcat=sc; activeSubsubcat=""; currentPage=1; syncUrl(); renderAll(); });
+      tilesShown = true;
+    }
+  } else if(!q && activeCat!=="Всі" && activeSubcat && !activeSubsubcat){
+    const subsubcats = getSubsubcats(activeCat, activeSubcat);
+    if(subsubcats.length){
+      const items = subsubcats.map(ssc=>({
+        value:ssc, label:ssc,
+        img:getTileImg(p=>p.cat===activeCat && p.subcat===activeSubcat && p.subsubcat===ssc),
+        ico:(PRODUCTS.find(p=>p.cat===activeCat && p.subcat===activeSubcat && p.subsubcat===ssc)||{}).ico,
+        count:PRODUCTS.filter(p=>p.cat===activeCat && p.subcat===activeSubcat && p.subsubcat===ssc).length
+      }));
+      renderTiles(items, (ssc)=>{ activeSubsubcat=ssc; currentPage=1; syncUrl(); renderAll(); });
+      tilesShown = true;
     }
   }
 
-  tilesGridEl.style.display = "none"; catalogLayoutEl.style.display = "";
+  tilesGridEl.style.display = tilesShown ? "" : "none";
+  catalogLayoutEl.style.display = "";
   render();
 }
 
