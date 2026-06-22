@@ -54,8 +54,13 @@ if(!p){
   box.innerHTML = `<div class="empty" style="display:block">Товар не знайдено. <br><br><a class="btn btn-dark" href="catalog.html">Повернутися в каталог</a></div>`;
 }else{
   document.title = p.name + " — БУДБАЗА";
-  document.getElementById("crumbs").innerHTML =
-    `<a href="index.html">Головна</a> / <a href="catalog.html">Каталог</a> / <a href="catalog.html?cat=${encodeURIComponent(p.cat)}">${p.cat}</a> / ${p.name}`;
+  {
+    let crumbHtml = `<a href="index.html">Головна</a> / <a href="catalog.html">Каталог</a> / <a href="catalog.html?cat=${encodeURIComponent(p.cat)}">${p.cat}</a>`;
+    if(p.subcat) crumbHtml += ` / <a href="catalog.html?cat=${encodeURIComponent(p.cat)}&subcat=${encodeURIComponent(p.subcat)}">${p.subcat}</a>`;
+    if(p.subsubcat) crumbHtml += ` / <a href="catalog.html?cat=${encodeURIComponent(p.cat)}&subcat=${encodeURIComponent(p.subcat)}&subsubcat=${encodeURIComponent(p.subsubcat)}">${p.subsubcat}</a>`;
+    crumbHtml += ` / ${p.name}`;
+    document.getElementById("crumbs").innerHTML = crumbHtml;
+  }
 
   box.innerHTML = `
     <div class="product">

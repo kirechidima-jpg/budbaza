@@ -70,12 +70,22 @@
 <script src="js/app.js"></script>
 <script>
 const PAGE_SIZE = 48;
-let activeCat = new URLSearchParams(location.search).get("cat") || "Всі";
+const initParams = new URLSearchParams(location.search);
+let activeCat = initParams.get("cat") || "Всі";
 if(!CATS.includes(activeCat)) activeCat = "Всі";
-let activeSubcat = "";
-let activeSubsubcat = "";
+let activeSubcat = activeCat!=="Всі" ? (initParams.get("subcat") || "") : "";
+let activeSubsubcat = activeCat!=="Всі" && activeSubcat ? (initParams.get("subsubcat") || "") : "";
 let currentPage = 1;
 let filteredList = [];
+
+function syncUrl(){
+  const params = new URLSearchParams();
+  if(activeCat!=="Всі") params.set("cat", activeCat);
+  if(activeSubcat) params.set("subcat", activeSubcat);
+  if(activeSubsubcat) params.set("subsubcat", activeSubsubcat);
+  const qs = params.toString();
+  history.replaceState(null, "", qs ? "catalog.html?"+qs : "catalog.html");
+}
 
 const catTreeEl = document.getElementById("catTree");
 const tilesGridEl = document.getElementById("tilesGrid");
@@ -111,7 +121,7 @@ function renderTree(){
   allBtn.onclick = ()=>{
     clearSearch();
     activeCat="Всі"; activeSubcat=""; activeSubsubcat=""; currentPage=1;
-    history.replaceState(null,"","catalog.html");
+    syncUrl();
     renderAll();
   };
   catTreeEl.appendChild(allBtn);
@@ -127,7 +137,7 @@ function renderTree(){
     catBtn.onclick = ()=>{
       clearSearch();
       activeCat=c; activeSubcat=""; activeSubsubcat=""; currentPage=1;
-      history.replaceState(null,"","catalog.html?cat="+encodeURIComponent(c));
+      syncUrl();
       renderAll();
     };
     node.appendChild(catBtn);
@@ -149,6 +159,7 @@ function renderTree(){
             if(sc===activeSubcat){ activeSubsubcat=""; }
             else { activeSubcat=sc; activeSubsubcat=""; }
             currentPage=1;
+            syncUrl();
             renderAll();
           };
           subNode.appendChild(subBtn);
@@ -163,7 +174,7 @@ function renderTree(){
                 const ssBtn = document.createElement("button");
                 ssBtn.className = "tree-subsub" + (ssc===activeSubsubcat ? " active" : "");
                 ssBtn.textContent = `${ssc} (${sscnt})`;
-                ssBtn.onclick = ()=>{ clearSearch(); activeSubsubcat = (ssc===activeSubsubcat ? "" : ssc); currentPage=1; renderAll(); };
+                ssBtn.onclick = ()=>{ clearSearch(); activeSubsubcat = (ssc===activeSubsubcat ? "" : ssc); currentPage=1; syncUrl(); renderAll(); };
                 ssWrap.appendChild(ssBtn);
               });
               subNode.appendChild(ssWrap);
@@ -203,11 +214,11 @@ function updateBreadcrumb(){
   if(activeSubsubcat) parts.push(activeSubsubcat);
   drillCrumbEl.innerHTML = parts.join(" / ");
   const crumbAll = document.getElementById("crumbAll");
-  if(crumbAll) crumbAll.onclick = (e)=>{ e.preventDefault(); clearSearch(); activeCat="Всі"; activeSubcat=""; activeSubsubcat=""; currentPage=1; history.replaceState(null,"","catalog.html"); renderAll(); };
+  if(crumbAll) crumbAll.onclick = (e)=>{ e.preventDefault(); clearSearch(); activeCat="Всі"; activeSubcat=""; activeSubsubcat=""; currentPage=1; syncUrl(); renderAll(); };
   const crumbCat = document.getElementById("crumbCat");
-  if(crumbCat) crumbCat.onclick = (e)=>{ e.preventDefault(); clearSearch(); activeSubcat=""; activeSubsubcat=""; currentPage=1; renderAll(); };
+  if(crumbCat) crumbCat.onclick = (e)=>{ e.preventDefault(); clearSearch(); activeSubcat=""; activeSubsubcat=""; currentPage=1; syncUrl(); renderAll(); };
   const crumbSubcat = document.getElementById("crumbSubcat");
-  if(crumbSubcat) crumbSubcat.onclick = (e)=>{ e.preventDefault(); clearSearch(); activeSubsubcat=""; currentPage=1; renderAll(); };
+  if(crumbSubcat) crumbSubcat.onclick = (e)=>{ e.preventDefault(); clearSearch(); activeSubsubcat=""; currentPage=1; syncUrl(); renderAll(); };
 }
 
 function renderMain(){
@@ -225,7 +236,7 @@ function renderMain(){
     }));
     renderTiles(items, (c)=>{
       activeCat=c; activeSubcat=""; activeSubsubcat=""; currentPage=1;
-      history.replaceState(null,"","catalog.html?cat="+encodeURIComponent(c));
+      syncUrl();
       renderAll();
     });
     return;
@@ -242,7 +253,7 @@ function renderMain(){
           ico:(PRODUCTS.find(p=>p.cat===activeCat && p.subcat===sc)||{}).ico,
           count:PRODUCTS.filter(p=>p.cat===activeCat && p.subcat===sc).length
         }));
-        renderTiles(items, (sc)=>{ activeSubcat=sc; activeSubsubcat=""; currentPage=1; renderAll(); });
+        renderTiles(items, (sc)=>{ activeSubcat=sc; activeSubsubcat=""; currentPage=1; syncUrl(); renderAll(); });
         return;
       }
     } else if(!activeSubsubcat){
@@ -255,7 +266,7 @@ function renderMain(){
           ico:(PRODUCTS.find(p=>p.cat===activeCat && p.subcat===activeSubcat && p.subsubcat===ssc)||{}).ico,
           count:PRODUCTS.filter(p=>p.cat===activeCat && p.subcat===activeSubcat && p.subsubcat===ssc).length
         }));
-        renderTiles(items, (ssc)=>{ activeSubsubcat=ssc; currentPage=1; renderAll(); });
+        renderTiles(items, (ssc)=>{ activeSubsubcat=ssc; currentPage=1; syncUrl(); renderAll(); });
         return;
       }
     }
