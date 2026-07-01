@@ -75,6 +75,7 @@ let activeCat = initParams.get("cat") || "Всі";
 if(!CATS.includes(activeCat)) activeCat = "Всі";
 let activeSubcat = activeCat!=="Всі" ? (initParams.get("subcat") || "") : "";
 let activeSubsubcat = activeCat!=="Всі" && activeSubcat ? (initParams.get("subsubcat") || "") : "";
+let activeSubsubsubcat = activeCat!=="Всі" && activeSubcat && activeSubsubcat ? (initParams.get("subsubsubcat") || "") : "";
 let currentPage = 1;
 let filteredList = [];
 
@@ -83,6 +84,7 @@ function syncUrl(){
   if(activeCat!=="Всі") params.set("cat", activeCat);
   if(activeSubcat) params.set("subcat", activeSubcat);
   if(activeSubsubcat) params.set("subsubcat", activeSubsubcat);
+  if(activeSubsubsubcat) params.set("subsubsubcat", activeSubsubsubcat);
   const qs = params.toString();
   history.replaceState(null, "", qs ? "catalog.html?"+qs : "catalog.html");
 }
@@ -99,6 +101,11 @@ function getSubcats(cat){
 
 function getSubsubcats(cat, subcat){
   const s = new Set(PRODUCTS.filter(p=>p.cat===cat && p.subcat===subcat && p.subsubcat).map(p=>p.subsubcat));
+  return [...s].sort((a,b)=>a.localeCompare(b,"uk"));
+}
+
+function getSubsubsubcats(cat, subcat, subsubcat){
+  const s = new Set(PRODUCTS.filter(p=>p.cat===cat && p.subcat===subcat && p.subsubcat===subsubcat && p.subsubsubcat).map(p=>p.subsubsubcat));
   return [...s].sort((a,b)=>a.localeCompare(b,"uk"));
 }
 
@@ -120,7 +127,7 @@ function renderTree(){
   allBtn.textContent = `Всі (${PRODUCTS.length})`;
   allBtn.onclick = ()=>{
     clearSearch();
-    activeCat="Всі"; activeSubcat=""; activeSubsubcat=""; currentPage=1;
+    activeCat="Всі"; activeSubcat=""; activeSubsubcat=""; activeSubsubsubcat=""; currentPage=1;
     syncUrl();
     renderAll();
   };
@@ -136,7 +143,7 @@ function renderTree(){
     catBtn.textContent = `${c} (${cnt})`;
     catBtn.onclick = ()=>{
       clearSearch();
-      activeCat=c; activeSubcat=""; activeSubsubcat=""; currentPage=1;
+      activeCat=c; activeSubcat=""; activeSubsubcat=""; activeSubsubsubcat=""; currentPage=1;
       syncUrl();
       renderAll();
     };
@@ -156,8 +163,8 @@ function renderTree(){
           subBtn.textContent = `${sc} (${scnt})`;
           subBtn.onclick = ()=>{
             clearSearch();
-            if(sc===activeSubcat){ activeSubsubcat=""; }
-            else { activeSubcat=sc; activeSubsubcat=""; }
+            if(sc===activeSubcat){ activeSubsubcat=""; activeSubsubsubcat=""; }
+            else { activeSubcat=sc; activeSubsubcat=""; activeSubsubsubcat=""; }
             currentPage=1;
             syncUrl();
             renderAll();
@@ -174,7 +181,30 @@ function renderTree(){
                 const ssBtn = document.createElement("button");
                 ssBtn.className = "tree-subsub" + (ssc===activeSubsubcat ? " active" : "");
                 ssBtn.textContent = `${ssc} (${sscnt})`;
-                ssBtn.onclick = ()=>{ clearSearch(); activeSubsubcat = (ssc===activeSubsubcat ? "" : ssc); currentPage=1; syncUrl(); renderAll(); };
+                ssBtn.onclick = ()=>{ clearSearch(); activeSubsubcat = (ssc===activeSubsubcat ? "" : ssc); activeSubsubsubcat=""; currentPage=1; syncUrl(); renderAll(); };
+
+                if(ssc===activeSubsubcat){
+                  const subsubsubcats = getSubsubsubcats(c, sc, ssc);
+                  if(subsubsubcats.length){
+                    const sssWrap = document.createElement("div");
+                    sssWrap.className = "tree-children";
+                    subsubsubcats.forEach(sssc=>{
+                      const ssscnt = PRODUCTS.filter(p=>p.cat===c && p.subcat===sc && p.subsubcat===ssc && p.subsubsubcat===sssc).length;
+                      const sssBtn = document.createElement("button");
+                      sssBtn.className = "tree-subsubsub" + (sssc===activeSubsubsubcat ? " active" : "");
+                      sssBtn.textContent = `${sssc} (${ssscnt})`;
+                      sssBtn.onclick = ()=>{ clearSearch(); activeSubsubsubcat = (sssc===activeSubsubsubcat ? "" : sssc); currentPage=1; syncUrl(); renderAll(); };
+                      sssWrap.appendChild(sssBtn);
+                    });
+                    const ssNode = document.createElement("div");
+                    ssNode.className = "tree-node";
+                    ssNode.appendChild(ssBtn);
+                    ssNode.appendChild(sssWrap);
+                    ssWrap.appendChild(ssNode);
+                    return;
+                  }
+                }
+
                 ssWrap.appendChild(ssBtn);
               });
               subNode.appendChild(ssWrap);
@@ -211,14 +241,17 @@ function updateBreadcrumb(){
   const parts = [`<a href="#" id="crumbAll">Каталог</a>`];
   if(activeCat!=="Всі") parts.push(activeSubcat ? `<a href="#" id="crumbCat">${activeCat}</a>` : activeCat);
   if(activeSubcat) parts.push(activeSubsubcat ? `<a href="#" id="crumbSubcat">${activeSubcat}</a>` : activeSubcat);
-  if(activeSubsubcat) parts.push(activeSubsubcat);
+  if(activeSubsubcat) parts.push(activeSubsubsubcat ? `<a href="#" id="crumbSubsubcat">${activeSubsubcat}</a>` : activeSubsubcat);
+  if(activeSubsubsubcat) parts.push(activeSubsubsubcat);
   drillCrumbEl.innerHTML = parts.join(" / ");
   const crumbAll = document.getElementById("crumbAll");
-  if(crumbAll) crumbAll.onclick = (e)=>{ e.preventDefault(); clearSearch(); activeCat="Всі"; activeSubcat=""; activeSubsubcat=""; currentPage=1; syncUrl(); renderAll(); };
+  if(crumbAll) crumbAll.onclick = (e)=>{ e.preventDefault(); clearSearch(); activeCat="Всі"; activeSubcat=""; activeSubsubcat=""; activeSubsubsubcat=""; currentPage=1; syncUrl(); renderAll(); };
   const crumbCat = document.getElementById("crumbCat");
-  if(crumbCat) crumbCat.onclick = (e)=>{ e.preventDefault(); clearSearch(); activeSubcat=""; activeSubsubcat=""; currentPage=1; syncUrl(); renderAll(); };
+  if(crumbCat) crumbCat.onclick = (e)=>{ e.preventDefault(); clearSearch(); activeSubcat=""; activeSubsubcat=""; activeSubsubsubcat=""; currentPage=1; syncUrl(); renderAll(); };
   const crumbSubcat = document.getElementById("crumbSubcat");
-  if(crumbSubcat) crumbSubcat.onclick = (e)=>{ e.preventDefault(); clearSearch(); activeSubsubcat=""; currentPage=1; syncUrl(); renderAll(); };
+  if(crumbSubcat) crumbSubcat.onclick = (e)=>{ e.preventDefault(); clearSearch(); activeSubsubcat=""; activeSubsubsubcat=""; currentPage=1; syncUrl(); renderAll(); };
+  const crumbSubsubcat = document.getElementById("crumbSubsubcat");
+  if(crumbSubsubcat) crumbSubsubcat.onclick = (e)=>{ e.preventDefault(); clearSearch(); activeSubsubsubcat=""; currentPage=1; syncUrl(); renderAll(); };
 }
 
 function renderMain(){
@@ -235,7 +268,7 @@ function renderMain(){
       count:PRODUCTS.filter(p=>p.cat===c).length
     }));
     renderTiles(items, (c)=>{
-      activeCat=c; activeSubcat=""; activeSubsubcat=""; currentPage=1;
+      activeCat=c; activeSubcat=""; activeSubsubcat=""; activeSubsubsubcat=""; currentPage=1;
       syncUrl();
       renderAll();
     });
@@ -249,7 +282,7 @@ function renderMain(){
         ico:(PRODUCTS.find(p=>p.cat===activeCat && p.subcat===sc)||{}).ico,
         count:PRODUCTS.filter(p=>p.cat===activeCat && p.subcat===sc).length
       }));
-      renderTiles(items, (sc)=>{ activeSubcat=sc; activeSubsubcat=""; currentPage=1; syncUrl(); renderAll(); });
+      renderTiles(items, (sc)=>{ activeSubcat=sc; activeSubsubcat=""; activeSubsubsubcat=""; currentPage=1; syncUrl(); renderAll(); });
       tilesShown = true;
     }
   } else if(!q && activeCat!=="Всі" && activeSubcat && !activeSubsubcat){
@@ -261,7 +294,19 @@ function renderMain(){
         ico:(PRODUCTS.find(p=>p.cat===activeCat && p.subcat===activeSubcat && p.subsubcat===ssc)||{}).ico,
         count:PRODUCTS.filter(p=>p.cat===activeCat && p.subcat===activeSubcat && p.subsubcat===ssc).length
       }));
-      renderTiles(items, (ssc)=>{ activeSubsubcat=ssc; currentPage=1; syncUrl(); renderAll(); });
+      renderTiles(items, (ssc)=>{ activeSubsubcat=ssc; activeSubsubsubcat=""; currentPage=1; syncUrl(); renderAll(); });
+      tilesShown = true;
+    }
+  } else if(!q && activeCat!=="Всі" && activeSubcat && activeSubsubcat && !activeSubsubsubcat){
+    const subsubsubcats = getSubsubsubcats(activeCat, activeSubcat, activeSubsubcat);
+    if(subsubsubcats.length){
+      const items = subsubsubcats.map(sssc=>({
+        value:sssc, label:sssc,
+        img:getTileImg(p=>p.cat===activeCat && p.subcat===activeSubcat && p.subsubcat===activeSubsubcat && p.subsubsubcat===sssc),
+        ico:(PRODUCTS.find(p=>p.cat===activeCat && p.subcat===activeSubcat && p.subsubcat===activeSubsubcat && p.subsubsubcat===sssc)||{}).ico,
+        count:PRODUCTS.filter(p=>p.cat===activeCat && p.subcat===activeSubcat && p.subsubcat===activeSubsubcat && p.subsubsubcat===sssc).length
+      }));
+      renderTiles(items, (sssc)=>{ activeSubsubsubcat=sssc; currentPage=1; syncUrl(); renderAll(); });
       tilesShown = true;
     }
   }
@@ -283,6 +328,7 @@ function render(){
     (activeCat==="Всі" || p.cat===activeCat) &&
     (!activeSubcat || p.subcat===activeSubcat) &&
     (!activeSubsubcat || p.subsubcat===activeSubsubcat) &&
+    (!activeSubsubsubcat || p.subsubsubcat===activeSubsubsubcat) &&
     (!q || (p.name+" "+(p.key||"")+" "+p.cat+" "+(p.meta||"")).toLowerCase().includes(q))
   );
   filteredList.sort((a,b)=>a.name.localeCompare(b.name,"uk"));

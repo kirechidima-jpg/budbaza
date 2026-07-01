@@ -113,6 +113,9 @@ select.sort{height:48px;border:1.5px solid var(--line);border-radius:var(--radiu
 .tree-sub.active{background:var(--orange);color:#fff}
 .tree-subsub{font-size:12.5px;font-weight:500;color:#666}
 .tree-subsub.active{background:var(--orange-d,var(--orange));color:#fff}
+.tree-subsubsub{display:block;width:100%;text-align:left;border:none;background:transparent;border-radius:6px;padding:6px 10px;font-size:12px;font-weight:400;cursor:pointer;color:#888}
+.tree-subsubsub:hover{background:var(--concrete)}
+.tree-subsubsub.active{background:var(--orange);color:#fff}
 
 @media (max-width:860px){
   .catalog-shell{flex-direction:column}
