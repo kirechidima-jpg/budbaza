@@ -1,0 +1,20 @@
+{
+  "name": "БУДБАЗА — будівельні матеріали",
+  "short_name": "БУДБАЗА",
+  "description": "Каталог будівельних матеріалів в Одесі",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#1E2126",
+  "theme_color": "#F25C05",
+  "lang": "uk",
+  "icons": [
+    { "src": "images/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "images/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "images/icon.svg",     "sizes": "any",     "type": "image/svg+xml", "purpose": "any maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Каталог",   "url": "/catalog.html",  "icons": [{"src":"images/icon-192.png","sizes":"192x192"}] },
+    { "name": "Кошик",     "url": "/cart.html",     "icons": [{"src":"images/icon-192.png","sizes":"192x192"}] },
+    { "name": "Контакти",  "url": "/contacts.html", "icons": [{"src":"images/icon-192.png","sizes":"192x192"}] }
+  ]
+}

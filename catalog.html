@@ -7,8 +7,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=9">
-</head>
+<link rel="stylesheet" href="css/style.css?v=10">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#F25C05">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="БУДБАЗА">
+<link rel="apple-touch-icon" href="/images/icon.svg"></head>
 <body>
 
 <header>
@@ -47,6 +52,12 @@
       <div class="tiles-grid" id="tilesGrid" style="display:none"></div>
       <div class="catalog-layout" id="catalogLayout" style="display:none">
         <div class="catalog-toolbar">
+          <div class="filter-bar">
+            <label class="stock-toggle">
+              <input type="checkbox" id="stockOnly"> Тільки в наявності
+            </label>
+            <span class="result-count" id="resultCount"></span>
+          </div>
           <select class="sort" id="sortSel">
             <option value="pop">За популярністю</option>
             <option value="cheap">Спочатку дешевші</option>
@@ -70,7 +81,7 @@
 <footer>
   <div class="fwrap">
     <div><b>БУДБАЗА</b>м. Одеса, вул. Промислова, 27<br>Пн–Сб 8:00–18:00</div>
-    <div><b>Контакти</b>+38 (097) 895-09-80<br>zakaz@budbaza.ua</div>
+    <div><b>Контакти</b><a href="tel:+380978950980" style="color:inherit">+38 (097) 895-09-80</a><br>zakaz@budbaza.ua</div>
     <div><b>Розділи</b><a href="catalog.html">Каталог</a><br><a href="calc.html">Калькулятор</a><br><a href="cart.html">Кошик</a></div>
     <div><b>Доставка</b>Одеса та область<br>Маніпулятор, самовивіз зі складу</div>
   </div>
@@ -334,18 +345,22 @@ function renderAll(){
 function render(){
   const q = document.getElementById("searchInput").value.trim().toLowerCase();
   const sort = document.getElementById("sortSel").value;
+  const stockOnly = document.getElementById("stockOnly").checked;
   filteredList = PRODUCTS.filter(p=>
     (activeCat==="Всі" || p.cat===activeCat) &&
     (!activeSubcat || p.subcat===activeSubcat) &&
     (!activeSubsubcat || p.subsubcat===activeSubsubcat) &&
     (!activeSubsubsubcat || p.subsubsubcat===activeSubsubsubcat) &&
-    (!q || (p.name+" "+(p.key||"")+" "+p.cat+" "+(p.meta||"")).toLowerCase().includes(q))
+    (!q || (p.name+" "+(p.key||"")+" "+p.cat+" "+(p.meta||"")).toLowerCase().includes(q)) &&
+    (!stockOnly || (typeof p.stock==="number" && p.stock>0))
   );
   filteredList.sort((a,b)=>a.name.localeCompare(b.name,"uk"));
   if(sort==="cheap") filteredList.sort((a,b)=>a.price-b.price);
   if(sort==="exp")   filteredList.sort((a,b)=>b.price-a.price);
 
   const total = filteredList.length;
+  const rcEl = document.getElementById("resultCount");
+  if(rcEl) rcEl.textContent = total ? "Знайдено: "+total+" товарів" : "";
   const totalPages = Math.ceil(total / PAGE_SIZE);
   if(currentPage > totalPages) currentPage = 1;
   const page = filteredList.slice((currentPage-1)*PAGE_SIZE, currentPage*PAGE_SIZE);
@@ -381,6 +396,7 @@ function goPage(p){ currentPage=p; render(); window.scrollTo({top:0,behavior:"sm
 // Reset page on search/filter
 document.getElementById("searchInput").addEventListener("input", ()=>{ currentPage=1; renderMain(); });
 document.getElementById("sortSel").addEventListener("change", ()=>{ currentPage=1; render(); });
+document.getElementById("stockOnly").addEventListener("change", ()=>{ currentPage=1; render(); });
 
 renderAll();
 

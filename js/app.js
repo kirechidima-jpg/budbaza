@@ -114,3 +114,52 @@ function productCard(p){
 }
 
 document.addEventListener("DOMContentLoaded", updateCartCount);
+
+// ── Recently viewed ──
+var VIEWED_KEY = "budbaza_viewed";
+function trackViewed(id){
+  try{
+    var v = JSON.parse(localStorage.getItem(VIEWED_KEY)||"[]");
+    v = [id].concat(v.filter(function(x){return x!==id;})).slice(0,8);
+    localStorage.setItem(VIEWED_KEY, JSON.stringify(v));
+  }catch(e){}
+}
+function getViewed(){
+  try{ return JSON.parse(localStorage.getItem(VIEWED_KEY)||"[]"); }catch(e){ return []; }
+}
+function renderViewed(containerId, excludeId){
+  var el = document.getElementById(containerId);
+  if(!el) return;
+  var ids = getViewed().filter(function(x){return x!==excludeId;});
+  var prods = ids.map(function(id){return PRODUCTS.find(function(p){return p.id===id;});}).filter(Boolean);
+  if(!prods.length){ el.parentElement && (el.parentElement.style.display="none"); return; }
+  el.innerHTML = prods.map(function(p){
+    var img = p.img ? '<img src="'+p.img+'" alt="'+p.name+'" loading="lazy">' : (p.ico||"📦");
+    var price = p.price > 0 ? fmt(p.price) : "Уточнити";
+    return '<a class="viewed-card" href="product.html?id='+p.id+'">'+
+      '<div class="viewed-card-img">'+img+'</div>'+
+      '<div class="viewed-card-body">'+
+        '<div class="viewed-card-name">'+p.name+'</div>'+
+        '<div class="viewed-card-price">'+price+'</div>'+
+      '</div>'+
+    '</a>';
+  }).join("");
+}
+
+// ── Share ──
+function shareProduct(name, url){
+  if(navigator.share){
+    navigator.share({title: name, url: url}).catch(function(){});
+  } else {
+    navigator.clipboard && navigator.clipboard.writeText(url).then(function(){
+      showToast("Посилання скопійовано");
+    });
+  }
+}
+
+// ── Service Worker ──
+if("serviceWorker" in navigator){
+  window.addEventListener("load", function(){
+    navigator.serviceWorker.register("/js/sw.js").catch(function(){});
+  });
+}

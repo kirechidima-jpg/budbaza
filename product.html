@@ -7,8 +7,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=9">
-</head>
+<link rel="stylesheet" href="css/style.css?v=10">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#F25C05">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="БУДБАЗА">
+<link rel="apple-touch-icon" href="/images/icon.svg"></head>
 <body>
 
 <header>
@@ -28,11 +33,20 @@
 <main>
   <div class="breadcrumbs" id="crumbs"><a href="index.html">Головна</a> / <a href="catalog.html">Каталог</a></div>
   <div id="productBox"></div>
+  <section id="viewedSec" style="margin-top:48px">
+    <div class="sec-head"><span class="tag">Історія</span><h2>Нещодавно переглянуті</h2></div>
+    <div class="viewed-scroll" id="viewedGrid"></div>
+  </section>
   <section class="related" id="relatedSec" style="display:none">
     <div class="sec-head"><span class="tag">Схожі товари</span><h2>З цієї ж категорії</h2></div>
     <div class="grid" id="relatedGrid"></div>
   </section>
 </main>
+
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img id="lbImg" src="" alt="" onclick="event.stopPropagation()">
+</div>
 
 <nav class="bottom-nav">
   <a href="index.html" class="bn-item"><span class="bn-ico">🏠</span><span>Головна</span></a>
@@ -44,7 +58,7 @@
 <footer>
   <div class="fwrap">
     <div><b>БУДБАЗА</b>м. Одеса, вул. Промислова, 27<br>Пн–Сб 8:00–18:00</div>
-    <div><b>Контакти</b>+38 (097) 895-09-80<br>zakaz@budbaza.ua</div>
+    <div><b>Контакти</b><a href="tel:+380978950980" style="color:inherit">+38 (097) 895-09-80</a><br>zakaz@budbaza.ua</div>
     <div><b>Розділи</b><a href="catalog.html">Каталог</a><br><a href="calc.html">Калькулятор</a><br><a href="cart.html">Кошик</a></div>
     <div><b>Доставка</b>Одеса та область<br>Маніпулятор, самовивіз зі складу</div>
   </div>
@@ -72,27 +86,41 @@ if(!p){
   // Build gallery: use imgs[] if present, else fallback to [img]
   const allImgs = (p.imgs && p.imgs.length) ? p.imgs : (p.img ? [p.img] : []);
 
+  function openLightbox(src){
+    var lb = document.getElementById("lightbox");
+    document.getElementById("lbImg").src = src;
+    lb.classList.add("open");
+  }
+  function closeLightbox(){ document.getElementById("lightbox").classList.remove("open"); }
+  document.addEventListener("keydown", function(e){ if(e.key==="Escape") closeLightbox(); });
+
   function buildGallery(){
     if(!allImgs.length) return `<div class="product-img">${p.ico||""}</div>`;
     if(allImgs.length === 1){
-      return `<div class="product-img"><img src="${allImgs[0]}" alt="${p.name}" style="width:100%;height:100%;object-fit:contain;"></div>`;
+      return `<div class="product-img" style="cursor:zoom-in" onclick="openLightbox('${allImgs[0]}')"><img src="${allImgs[0]}" alt="${p.name}" style="width:100%;height:100%;object-fit:contain;"></div>`;
     }
     const thumbs = allImgs.map((u,i)=>`<img class="gallery-thumb${i===0?" active":""}" src="${u}" alt="" data-idx="${i}" onclick="galTo(${i})">`).join("");
     return `<div class="gallery">
-      <div class="gallery-main">
-        <button class="gallery-arrow prev" onclick="galStep(-1)">&#8249;</button>
+      <div class="gallery-main" style="cursor:zoom-in" onclick="openLightbox(allImgs[galIdx])">
+        <button class="gallery-arrow prev" onclick="event.stopPropagation();galStep(-1)">&#8249;</button>
         <img id="galImg" src="${allImgs[0]}" alt="${p.name}">
-        <button class="gallery-arrow next" onclick="galStep(1)">&#8250;</button>
+        <button class="gallery-arrow next" onclick="event.stopPropagation();galStep(1)">&#8250;</button>
         <span class="gallery-counter"><span id="galN">1</span>/${allImgs.length}</span>
       </div>
       <div class="gallery-thumbs" id="galThumbs">${thumbs}</div>
     </div>`;
   }
 
+  trackViewed(p.id);
+
   box.innerHTML = `
     <div class="product">
       ${buildGallery()}
       <div>
+        <div class="p-actions">
+          <button class="btn-back" onclick="history.length>1?history.back():location.href='catalog.html?cat='+encodeURIComponent('${p.cat}')">← Назад</button>
+          <button class="btn-share" onclick="shareProduct('${p.name.replace(/'/g,"\\'")}', location.href)">⬆ Поділитися</button>
+        </div>
         <div class="p-cat">${p.cat}</div>
         <h1>${p.name}</h1>
         <div class="p-meta">${p.meta}</div>
@@ -147,6 +175,7 @@ if(!p){
     }, {passive:true});
   }
 
+  renderViewed("viewedGrid", p.id);
   const related = PRODUCTS.filter(x=>x.cat===p.cat && x.id!==p.id).slice(0,4);
   if(related.length){
     document.getElementById("relatedSec").style.display = "";
