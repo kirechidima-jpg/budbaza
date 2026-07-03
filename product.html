@@ -62,9 +62,29 @@ if(!p){
     document.getElementById("crumbs").innerHTML = crumbHtml;
   }
 
+  // Build gallery: use imgs[] if present, else fallback to [img]
+  const allImgs = (p.imgs && p.imgs.length) ? p.imgs : (p.img ? [p.img] : []);
+
+  function buildGallery(){
+    if(!allImgs.length) return `<div class="product-img">${p.ico||""}</div>`;
+    if(allImgs.length === 1){
+      return `<div class="product-img"><img src="${allImgs[0]}" alt="${p.name}" style="width:100%;height:100%;object-fit:contain;"></div>`;
+    }
+    const thumbs = allImgs.map((u,i)=>`<img class="gallery-thumb${i===0?" active":""}" src="${u}" alt="" data-idx="${i}" onclick="galTo(${i})">`).join("");
+    return `<div class="gallery">
+      <div class="gallery-main">
+        <button class="gallery-arrow prev" onclick="galStep(-1)">&#8249;</button>
+        <img id="galImg" src="${allImgs[0]}" alt="${p.name}">
+        <button class="gallery-arrow next" onclick="galStep(1)">&#8250;</button>
+        <span class="gallery-counter"><span id="galN">1</span>/${allImgs.length}</span>
+      </div>
+      <div class="gallery-thumbs" id="galThumbs">${thumbs}</div>
+    </div>`;
+  }
+
   box.innerHTML = `
     <div class="product">
-      <div class="product-img">${p.img?`<img src="${p.img}" alt="${p.name}" style="width:100%;height:100%;object-fit:contain;">`:p.ico}${p.hit?'<span class="badge hit">Хіт продажів</span>':''}</div>
+      ${buildGallery()}
       <div>
         <div class="p-cat">${p.cat}</div>
         <h1>${p.name}</h1>
@@ -84,6 +104,26 @@ if(!p){
         </div>
       </div>
     </div>`;
+
+  // Gallery logic
+  let galIdx = 0;
+  function galTo(i){
+    galIdx = (i + allImgs.length) % allImgs.length;
+    const img = document.getElementById("galImg");
+    if(img){ img.style.opacity=0; setTimeout(()=>{ img.src=allImgs[galIdx]; img.style.opacity=1; },100); }
+    const n = document.getElementById("galN");
+    if(n) n.textContent = galIdx+1;
+    document.querySelectorAll(".gallery-thumb").forEach((t,j)=>t.classList.toggle("active",j===galIdx));
+  }
+  function galStep(d){ galTo(galIdx+d); }
+  window.galTo = galTo;
+  window.galStep = galStep;
+
+  // Keyboard arrows
+  document.addEventListener("keydown", function(e){
+    if(allImgs.length>1 && e.key==="ArrowLeft") galStep(-1);
+    if(allImgs.length>1 && e.key==="ArrowRight") galStep(1);
+  });
 
   const related = PRODUCTS.filter(x=>x.cat===p.cat && x.id!==p.id).slice(0,4);
   if(related.length){
