@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="uk">
 <head>
 <meta charset="UTF-8">
@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=8">
+<link rel="stylesheet" href="css/style.css?v=9">
 </head>
 <body>
 
@@ -33,6 +33,13 @@
     <div class="grid" id="relatedGrid"></div>
   </section>
 </main>
+
+<nav class="bottom-nav">
+  <a href="index.html" class="bn-item"><span class="bn-ico">🏠</span><span>Головна</span></a>
+  <a href="catalog.html" class="bn-item current"><span class="bn-ico">📦</span><span>Каталог</span></a>
+  <a href="cart.html" class="bn-item"><span class="bn-ico">🛒</span><span id="bnBadge" class="bn-badge" style="display:none">0</span><span>Кошик</span></a>
+  <a href="contacts.html" class="bn-item"><span class="bn-ico">📞</span><span>Контакти</span></a>
+</nav>
 
 <footer>
   <div class="fwrap">
@@ -124,6 +131,21 @@ if(!p){
     if(allImgs.length>1 && e.key==="ArrowLeft") galStep(-1);
     if(allImgs.length>1 && e.key==="ArrowRight") galStep(1);
   });
+
+  // Touch swipe on gallery
+  if(allImgs.length > 1){
+    var _tx0 = null;
+    document.addEventListener("touchstart", function(e){
+      var gm = document.querySelector(".gallery-main");
+      if(gm && gm.contains(e.target)) _tx0 = e.touches[0].clientX;
+    }, {passive:true});
+    document.addEventListener("touchend", function(e){
+      if(_tx0 === null) return;
+      var dx = e.changedTouches[0].clientX - _tx0;
+      _tx0 = null;
+      if(Math.abs(dx) > 40) galStep(dx < 0 ? 1 : -1);
+    }, {passive:true});
+  }
 
   const related = PRODUCTS.filter(x=>x.cat===p.cat && x.id!==p.id).slice(0,4);
   if(related.length){

@@ -272,3 +272,60 @@ footer a:hover{color:#fff;text-decoration:underline}
 .stock-badge{font-size:.78rem;font-weight:600;padding:2px 8px;border-radius:4px;margin-bottom:6px;display:inline-block}
 .stock-badge.in{background:#e6f9ee;color:#1a7a3c}
 .stock-badge.out{background:#fdecea;color:#c0392b}
+
+/* ───── bottom navigation (mobile) ───── */
+.bottom-nav{display:none}
+@media(max-width:760px){
+  body{padding-bottom:62px}
+  .toast{bottom:74px}
+  .bottom-nav{
+    display:flex;position:fixed;bottom:0;left:0;right:0;z-index:80;
+    background:var(--ink);border-top:3px solid var(--orange);height:62px;
+    box-shadow:0 -2px 12px rgba(0,0,0,.25)
+  }
+  .bn-item{
+    flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    color:#9aa0a8;text-decoration:none;font-size:10px;gap:2px;position:relative;
+    padding:6px 0;transition:color .15s
+  }
+  .bn-item:hover,.bn-item.current{color:#fff}
+  .bn-item.current .bn-ico{color:var(--orange)}
+  .bn-ico{font-size:22px;line-height:1}
+  .bn-badge{
+    position:absolute;top:5px;right:calc(50% - 22px);
+    background:var(--orange);color:#fff;font-size:9px;font-weight:700;
+    min-width:17px;height:17px;border-radius:9px;
+    display:flex;align-items:center;justify-content:center;padding:0 4px;
+    border:2px solid var(--ink)
+  }
+
+  /* ───── sticky search bar in catalog ───── */
+  .search-sticky-wrap{
+    position:sticky;top:64px;z-index:40;
+    background:var(--concrete);padding:8px 0 6px;
+    margin:0 -20px;padding-left:20px;padding-right:20px;
+    border-bottom:1px solid var(--line)
+  }
+
+  /* ───── collapsible cat-tree on mobile ───── */
+  .cat-tree-toggle{
+    display:flex;width:100%;justify-content:space-between;align-items:center;
+    background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);
+    padding:12px 16px;font-size:15px;font-weight:600;cursor:pointer;color:var(--ink);
+    margin-bottom:8px
+  }
+  .cat-tree-toggle .arr{font-size:18px;transition:transform .2s}
+  .cat-tree-toggle.open .arr{transform:rotate(180deg)}
+  .cat-tree{display:none!important}
+  .cat-tree.open{display:flex!important}
+
+  /* ───── larger touch targets ───── */
+  .add{min-height:44px;padding:10px 16px;font-size:14px}
+  .qty button{width:40px;height:44px;font-size:20px}
+  .qty span{min-width:44px;font-size:16px}
+  .tree-cat,.tree-sub,.tree-subsub,.tree-subsubsub{padding:11px 10px;font-size:15px}
+  .tree-sub{font-size:14px}
+  .tree-subsub{font-size:13.5px}
+  .chip{padding:9px 18px;font-size:14px}
+  select.sort{height:44px}
+}

@@ -42,8 +42,11 @@ function cartSum(cart){
 }
 
 function updateCartCount(){
+  var total = getCart().reduce(function(s, x){ return s + x.qty; }, 0);
   var el = document.getElementById("cartCount");
-  if(el) el.textContent = getCart().reduce(function(s, x){ return s + x.qty; }, 0);
+  if(el) el.textContent = total;
+  var bn = document.getElementById("bnBadge");
+  if(bn){ bn.textContent = total; bn.style.display = total > 0 ? "" : "none"; }
 }
 
 var _toastT;
