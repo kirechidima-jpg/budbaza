@@ -163,3 +163,64 @@ if("serviceWorker" in navigator){
     navigator.serviceWorker.register("/js/sw.js").catch(function(){});
   });
 }
+
+// ── GA4 ──
+function initGA(){
+  if(typeof GA_ID === "undefined" || !GA_ID) return;
+  var s = document.createElement("script");
+  s.async = true;
+  s.src = "https://www.googletagmanager.com/gtag/js?id=" + GA_ID;
+  document.head.appendChild(s);
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  window.gtag = gtag;
+  gtag("js", new Date());
+  gtag("config", GA_ID);
+}
+
+// ── Tawk.to ──
+function initTawk(){
+  if(typeof TAWK_S1 === "undefined" || !TAWK_S1 || !TAWK_S2) return;
+  window.Tawk_API = window.Tawk_API || {};
+  window.Tawk_LoadStart = new Date();
+  var s = document.createElement("script");
+  s.async = true;
+  s.src = "https://embed.tawk.to/" + TAWK_S1 + "/" + TAWK_S2;
+  s.charset = "UTF-8";
+  s.setAttribute("crossorigin", "*");
+  document.head.appendChild(s);
+}
+
+// ── Telegram: відправка замовлення ──
+function sendToTelegram(order){
+  if(typeof TG_TOKEN === "undefined" || !TG_TOKEN || !TG_CHAT) return Promise.resolve();
+  var lines = [
+    "🛒 *Нове замовлення БУДБАЗА*",
+    "№ " + order.num,
+    "",
+    "👤 " + order.name,
+    "📞 " + order.phone,
+    order.delivery === "delivery" ? "🚛 Доставка: " + order.addr : "🏭 Самовивіз зі складу",
+    "💳 " + order.pay,
+    order.note ? "💬 " + order.note : "",
+    "",
+    "📦 Товари:"
+  ];
+  order.items.forEach(function(x){
+    lines.push("• " + x.name + " × " + x.qty + " " + x.unit + " — " + x.total);
+  });
+  lines.push("");
+  lines.push("💰 Разом: " + order.sum);
+
+  var text = lines.filter(function(l){ return l !== null && l !== undefined; }).join("\n");
+  return fetch("https://api.telegram.org/bot" + TG_TOKEN + "/sendMessage", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({chat_id: TG_CHAT, text: text, parse_mode: "Markdown"})
+  }).catch(function(){});
+}
+
+document.addEventListener("DOMContentLoaded", function(){
+  initGA();
+  initTawk();
+});

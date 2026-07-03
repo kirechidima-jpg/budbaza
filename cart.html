@@ -53,6 +53,7 @@
   </div>
 </footer>
 
+<script src="js/config.js"></script>
 <script src="js/data.js"></script>
 <script src="js/app.js"></script>
 <script>
@@ -151,13 +152,31 @@ function toggleAddr(){
 function submitOrder(){
   const name  = document.getElementById("fName").value.trim();
   const phone = document.getElementById("fPhone").value.trim();
-  const needAddr = document.getElementById("fDelivery").value === "delivery";
-  const addr  = document.getElementById("fAddr").value.trim();
+  const delivery = document.getElementById("fDelivery").value;
+  const needAddr = delivery === "delivery";
+  const addr  = document.getElementById("fAddr") ? document.getElementById("fAddr").value.trim() : "";
+  const pay   = document.getElementById("fPay").value;
+  const note  = document.getElementById("fNote").value.trim();
   if(!name || !phone || (needAddr && !addr)){
     showToast("Заповніть обов'язкові поля (*)");
     return;
   }
+  const cart = getCart();
   const num = "БЗ-" + String(Math.floor(10000 + Math.random()*90000));
+
+  const orderItems = cart.map(function(x){
+    const p = PRODUCTS.find(function(pp){ return pp.id===x.id; }) || {name:"Товар",unit:"шт",price:0};
+    return {name:p.name, qty:x.qty, unit:p.unit, total:fmt(p.price*x.qty)};
+  });
+
+  sendToTelegram({
+    num:num, name:name, phone:phone,
+    delivery:delivery, addr:addr, pay:pay, note:note,
+    items:orderItems, sum:fmt(cartSum(cart))
+  });
+
+  if(typeof gtag !== "undefined") gtag("event","purchase",{transaction_id:num,value:cartSum(cart),currency:"UAH"});
+
   saveCart([]);
   page.innerHTML = `
     <div class="order-ok">

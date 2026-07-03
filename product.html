@@ -64,6 +64,7 @@
   </div>
 </footer>
 
+<script src="js/config.js"></script>
 <script src="js/data.js"></script>
 <script src="js/app.js"></script>
 <script>
@@ -112,6 +113,12 @@ if(!p){
   }
 
   trackViewed(p.id);
+
+  // JSON-LD для Google
+  const ld = {"@context":"https://schema.org/","@type":"Product","name":p.name,"description":p.desc||p.name,"sku":p.meta||String(p.id),"offers":{"@type":"Offer","priceCurrency":"UAH","price":p.price>0?p.price:undefined,"availability":(typeof p.stock==="number"&&p.stock>0)?"https://schema.org/InStock":"https://schema.org/OutOfStock","seller":{"@type":"Organization","name":"БУДБАЗА"}}};
+  if(p.img) ld.image = p.img;
+  const ldEl = document.createElement("script"); ldEl.type="application/ld+json"; ldEl.textContent=JSON.stringify(ld); document.head.appendChild(ldEl);
+  if(typeof gtag!=="undefined") gtag("event","view_item",{items:[{item_id:p.id,item_name:p.name,price:p.price}]});
 
   box.innerHTML = `
     <div class="product">
