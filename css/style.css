@@ -343,15 +343,15 @@ footer a:hover{color:#fff;text-decoration:underline}
   .toast{bottom:74px}
   .bottom-nav{
     display:flex;position:fixed;bottom:0;left:0;right:0;z-index:80;
-    background:var(--ink);border-top:3px solid var(--orange);height:62px;
-    box-shadow:0 -2px 12px rgba(0,0,0,.25)
+    background:#fff;border-top:3px solid var(--orange);height:62px;
+    box-shadow:0 -2px 16px rgba(0,0,0,.18)
   }
   .bn-item{
     flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-    color:#9aa0a8;text-decoration:none;font-size:10px;gap:2px;position:relative;
+    color:#999;text-decoration:none;font-size:10px;gap:2px;position:relative;
     padding:6px 0;transition:color .15s
   }
-  .bn-item:hover,.bn-item.current{color:#fff}
+  .bn-item:hover,.bn-item.current{color:var(--ink)}
   .bn-item.current .bn-ico{color:var(--orange)}
   .bn-ico{font-size:22px;line-height:1}
   .bn-badge{
