@@ -5648,6 +5648,6 @@ const PRODUCTS = [
   {id:5639,name:"Шланг ПВХ Gerber Plus 1/2 25м",cat:"Господарські товари",price:1200,unit:"шт.",ico:"📦",img:"",subcat:"Шланги для поливу",meta:"Арт.: 3435",key:"шланг пвх gerber plus 1/2 25м",desc:"Шланг ПВХ Gerber Plus 1/2 25м",stock:1,specs:[]},
   {id:5640,name:"Шланг ПВХ Gerber Plus 3/4 10м",cat:"Господарські товари",price:860,unit:"шт.",ico:"📦",img:"",subcat:"Шланги для поливу",meta:"Арт.: 3650",key:"шланг пвх gerber plus 3/4 10м",desc:"Шланг ПВХ Gerber Plus 3/4 10м",stock:2,specs:[]},
   {id:5641,name:"Кирпич двойной 2НФ 250*120*138",cat:"Загальнобудівельний матеріал",price:24,unit:"шт.",ico:"📦",img:"",subcat:"Цегла та блоки",meta:"Арт.: 3703",key:"кирпич двойной 2нф 250120138",desc:"Кирпич двойной 2НФ 250*120*138",stock:840,specs:[]},
-  {id:5642,name:"ПВС 4*6 ззцс",cat:"Електрика",price:205,unit:"м/п",ico:"🔌",img:"",subcat:"Кабель та провід",meta:"Арт.: 5404",key:"пвс 46 ззцс",desc:"ПВС 4*6 ззцс",stock:50,specs:[]},
+  {id:5642,name:"ПВС 4*6 ззцс",cat:"Електрика",price:205,unit:"м/п",ico:"🔌",img:"",subcat:"Кабелі та проводи",meta:"Арт.: 5404",key:"пвс 46 ззцс",desc:"ПВС 4*6 ззцс",stock:50,specs:[]},
   {id:5643,name:"Маска защитная Sigma",cat:"Засоби захисту",price:150,unit:"шт.",ico:"🦺",img:"",subcat:"Захист органів дихання та обличчя",meta:"Арт.: 5442",key:"маска защитная sigma",desc:"Маска защитная Sigma",stock:1,specs:[]},
 ];
