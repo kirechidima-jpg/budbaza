@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>������� � �������� �������� � ����</title>
+<title>БУДБАЗА — будівельні матеріали в Одесі</title>
 <link rel="preconnect" href="https://fonts.bunny.net">
 <link href="https://fonts.bunny.net/css?family=oswald:400,500,600,700|inter:400,500,600,700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css?v=11">
@@ -11,92 +11,92 @@
 <meta name="theme-color" content="#F25C05">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="�������">
+<meta name="apple-mobile-web-app-title" content="БУДБАЗА">
 <link rel="apple-touch-icon" href="/images/icon.svg"></head>
 <body>
 
 <header>
   <div class="hwrap">
-    <a class="logo" href="index.html">���<span>����</span><small>�������� �������� � �����</small></a>
-    <button class="burger" onclick="toggleNav()" aria-label="����">?</button>
+    <a class="logo" href="index.html">БУД<span>БАЗА</span><small>будівельні матеріали · Одеса</small></a>
+    <button class="burger" onclick="toggleNav()" aria-label="Меню">☰</button>
     <nav>
-      <a href="index.html" class="current">�������</a>
-      <a href="catalog.html">�������</a>
-      <a href="calc.html">�����������</a>
-      <a href="contacts.html">��������</a>
+      <a href="index.html" class="current">Головна</a>
+      <a href="catalog.html">Каталог</a>
+      <a href="calc.html">Калькулятор</a>
+      <a href="contacts.html">Контакти</a>
     </nav>
-    <a class="cart-link" href="cart.html">?? ����� <span class="cart-count" id="cartCount">0</span></a>
+    <a class="cart-link" href="cart.html">🛒 Кошик <span class="cart-count" id="cartCount">0</span></a>
   </div>
 </header>
 
 <section class="hero">
   <div class="hero-in">
     <div>
-      <h1>��� ��� ������ �<br>� ������ <em>�� 24 ������</em></h1>
-      <p>������, �����, ��������, ��������, ���� ����� �� ���������. ������ ���� ��� ���������� ������, �������� ������������ �� ���� �� ������.</p>
+      <h1>Все для будови —<br>зі складу <em>за 24 години</em></h1>
+      <p>Цемент, цегла, газоблок, арматура, сухі суміші та утеплювач. Гуртові ціни для будівельних бригад, доставка маніпулятором по Одесі та області.</p>
       <div class="hero-actions">
-        <a href="catalog.html" class="btn btn-orange">������� �� ��������</a>
-        <a href="calc.html" class="btn btn-ghost">����������� ��������</a>
+        <a href="catalog.html" class="btn btn-orange">Перейти до каталогу</a>
+        <a href="calc.html" class="btn btn-ghost">Розрахувати матеріали</a>
       </div>
     </div>
     <div class="hero-card">
-      <h3>// ����� �������</h3>
-      <div class="hero-stat"><span>������� � ��������</span><b>5 542</b></div>
-      <div class="hero-stat"><span>̳������� ��������</span><b>�� 350 ?</b></div>
-      <div class="hero-stat"><span>������ �� 10 �����</span><b>?7 %</b></div>
-      <div class="hero-stat"><span>����� ������</span><b>���� 8:00�18:00</b></div>
+      <h3>// Склад сьогодні</h3>
+      <div class="hero-stat"><span>Позицій у наявності</span><b>5 542</b></div>
+      <div class="hero-stat"><span>Мінімальна доставка</span><b>від 350 ₴</b></div>
+      <div class="hero-stat"><span>Знижка від 10 палет</span><b>−7 %</b></div>
+      <div class="hero-stat"><span>Графік роботи</span><b>Пн–Сб 8:00–18:00</b></div>
     </div>
   </div>
 </section>
 
 <main>
   <section>
-    <div class="sec-head"><span class="tag">01 / ճ�� �������</span><h2>��������� ������ �� ��'���</h2></div>
-    <p class="sec-sub">����� �������, �� ������ � �� ����� � ������ �������.</p>
+    <div class="sec-head"><span class="tag">01 / Хіти продажів</span><h2>Найчастіше беруть на об'єкт</h2></div>
+    <p class="sec-sub">Базові позиції, які завжди є на складі у великій кількості.</p>
     <div class="grid" id="hitsGrid"></div>
     <div style="margin-top:24px;text-align:center">
-      <a href="catalog.html" class="btn btn-dark">���� ������� � 5 542 ������� ></a>
+      <a href="catalog.html" class="btn btn-dark">Весь каталог — 5 542 позиції →</a>
     </div>
   </section>
 
   <div class="ruler" aria-hidden="true"></div>
 
   <section id="viewedSec" style="margin-top:48px;display:none">
-    <div class="sec-head"><span class="tag">02 / ������</span><h2>��������� ����������</h2></div>
+    <div class="sec-head"><span class="tag">02 / Історія</span><h2>Нещодавно переглянуті</h2></div>
     <div class="viewed-scroll" id="viewedGrid"></div>
   </section>
 
   <section style="margin-top:48px">
-    <div class="sec-head"><span class="tag">02 / �������</span><h2>�� � �� �����</h2></div>
+    <div class="sec-head"><span class="tag">02 / Категорії</span><h2>Що є на складі</h2></div>
     <div class="chips" id="homeCats"></div>
   </section>
 
   <div class="ruler" aria-hidden="true"></div>
 
   <section style="margin-top:48px">
-    <div class="sec-head"><span class="tag">03 / ���� ��</span><h2>�������� �� �������</h2></div>
+    <div class="sec-head"><span class="tag">03 / Чому ми</span><h2>Працюємо як бригада</h2></div>
     <div class="feats">
-      <div class="feat"><div class="ico">???</div><h3>������� ����� 4 000 �?</h3><p>�� ������� � �������� ������ �� ����� � ����. ��� ��� ���������� ����� 2 �����.</p></div>
-      <div class="feat"><div class="ico">??</div><h3>�������� ������������</h3><p>������������ ������ ����� �� ��'���. �� ���� � � ���� ����������.</p></div>
-      <div class="feat"><div class="ico">??</div><h3>���������� ���������</h3><p>����������� �������� �������� �� ����� ������� � ��� ������������� <a href="calc.html">�������������</a>.</p></div>
-      <div class="feat"><div class="ico">??</div><h3>���������� �������</h3><p>������������ ��� ������ �������� ����� �������� 30 ���.</p></div>
+      <div class="feat"><div class="ico">🏗️</div><h3>Власний склад 4 000 м²</h3><p>Усі позиції з каталогу фізично на складі в Одесі. Без «під замовлення через 2 тижні».</p></div>
+      <div class="feat"><div class="ico">🚛</div><h3>Доставка маніпулятором</h3><p>Розвантажимо палети прямо на об'єкті. По місту — в день замовлення.</p></div>
+      <div class="feat"><div class="ico">📐</div><h3>Прорахунок кошторису</h3><p>Безкоштовно порахуємо матеріали за вашим проєктом — або скористайтеся <a href="calc.html">калькулятором</a>.</p></div>
+      <div class="feat"><div class="ico">↩️</div><h3>Повернення залишків</h3><p>Невикористані цілі палети приймаємо назад протягом 30 днів.</p></div>
     </div>
   </section>
 </main>
 
 <nav class="bottom-nav">
-  <a href="index.html" class="bn-item current"><span class="bn-ico">??</span><span>�������</span></a>
-  <a href="catalog.html" class="bn-item"><span class="bn-ico">??</span><span>�������</span></a>
-  <a href="cart.html" class="bn-item bn-cart"><span class="bn-ico">??</span><span id="bnBadge" class="bn-badge" style="display:none">0</span><span>�����</span></a>
-  <a href="contacts.html" class="bn-item"><span class="bn-ico">??</span><span>��������</span></a>
+  <a href="index.html" class="bn-item current"><span class="bn-ico">🏠</span><span>Головна</span></a>
+  <a href="catalog.html" class="bn-item"><span class="bn-ico">📦</span><span>Каталог</span></a>
+  <a href="cart.html" class="bn-item bn-cart"><span class="bn-ico">🛒</span><span id="bnBadge" class="bn-badge" style="display:none">0</span><span>Кошик</span></a>
+  <a href="contacts.html" class="bn-item"><span class="bn-ico">📞</span><span>Контакти</span></a>
 </nav>
 
 <footer>
   <div class="fwrap">
-    <div><b>�������</b>�. �����, ���. ����������, 27<br>���� 8:00�18:00</div>
-    <div><b>��������</b><a href="tel:+380978950980" style="color:inherit">+38 (097) 895-09-80</a> <a href="viber://chat?number=%2B380978950980" title="Viber" style="color:#7360f2;text-decoration:none;font-size:15px">??</a><br>zakaz@budbaza.ua</div>
-    <div><b>������</b><a href="catalog.html">�������</a><br><a href="calc.html">�����������</a><br><a href="cart.html">�����</a></div>
-    <div><b>��������</b>����� �� �������<br>����������, �������� � ������</div>
+    <div><b>БУДБАЗА</b>м. Одеса, вул. Промислова, 27<br>Пн–Сб 8:00–18:00</div>
+    <div><b>Контакти</b><a href="tel:+380978950980" style="color:inherit">+38 (097) 895-09-80</a> <a href="viber://chat?number=%2B380978950980" title="Viber" style="color:#7360f2;text-decoration:none;font-size:15px">📲</a><br>zakaz@budbaza.ua</div>
+    <div><b>Розділи</b><a href="catalog.html">Каталог</a><br><a href="calc.html">Калькулятор</a><br><a href="cart.html">Кошик</a></div>
+    <div><b>Доставка</b>Одеса та область<br>Маніпулятор, самовивіз зі складу</div>
   </div>
 </footer>
 
@@ -108,7 +108,7 @@
     PRODUCTS.filter(p=>p.hit).concat(PRODUCTS.filter(p=>!p.hit).slice(0,5)).slice(0,8).map(productCard).join("");
 
   document.getElementById("homeCats").innerHTML =
-    CATS.filter(c=>c!=="��").map(c=>`<a class="chip" href="catalog.html?cat=${encodeURIComponent(c)}">${c}</a>`).join("");
+    CATS.filter(c=>c!=="Всі").map(c=>`<a class="chip" href="catalog.html?cat=${encodeURIComponent(c)}">${c}</a>`).join("");
 
   // recently viewed
   var _viewed = getViewed();

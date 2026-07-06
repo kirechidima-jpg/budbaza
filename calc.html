@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>���������� ����������� � �������</title>
+<title>Будівельний калькулятор — БУДБАЗА</title>
 <link rel="preconnect" href="https://fonts.bunny.net">
 <link href="https://fonts.bunny.net/css?family=oswald:400,500,600,700|inter:400,500,600,700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css?v=11">
@@ -11,58 +11,58 @@
 <meta name="theme-color" content="#F25C05">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="�������">
+<meta name="apple-mobile-web-app-title" content="БУДБАЗА">
 <link rel="apple-touch-icon" href="/images/icon.svg"></head>
 <body>
 
 <header>
   <div class="hwrap">
-    <a class="logo" href="index.html">���<span>����</span><small>�������� �������� � �����</small></a>
-    <button class="burger" onclick="toggleNav()" aria-label="����">?</button>
+    <a class="logo" href="index.html">БУД<span>БАЗА</span><small>будівельні матеріали · Одеса</small></a>
+    <button class="burger" onclick="toggleNav()" aria-label="Меню">☰</button>
     <nav>
-      <a href="index.html">�������</a>
-      <a href="catalog.html">�������</a>
-      <a href="calc.html" class="current">�����������</a>
-      <a href="contacts.html">��������</a>
+      <a href="index.html">Головна</a>
+      <a href="catalog.html">Каталог</a>
+      <a href="calc.html" class="current">Калькулятор</a>
+      <a href="contacts.html">Контакти</a>
     </nav>
-    <a class="cart-link" href="cart.html">?? ����� <span class="cart-count" id="cartCount">0</span></a>
+    <a class="cart-link" href="cart.html">🛒 Кошик <span class="cart-count" id="cartCount">0</span></a>
   </div>
 </header>
 
 <main>
-  <div class="breadcrumbs"><a href="index.html">�������</a> / �����������</div>
-  <div class="sec-head"><span class="tag">��������</span><h2>���������� �����������</h2></div>
-  <p class="sec-sub">��������� ���������� ������� ��������. ��������� ����� ������ ������ � ����� � �������� ����������� � �������� �� ��������� ������.</p>
+  <div class="breadcrumbs"><a href="index.html">Головна</a> / Калькулятор</div>
+  <div class="sec-head"><span class="tag">Кошторис</span><h2>Будівельний калькулятор</h2></div>
+  <p class="sec-sub">Орієнтовний розрахунок кількості матеріалу. Результат можна одразу додати в кошик — матеріали підтягнуться з каталогу за поточними цінами.</p>
 
   <div class="calc-wrap">
     <div class="calc-left">
-      <h2 id="calcTitle">������ ���</h2>
+      <h2 id="calcTitle">Кладка стін</h2>
       <p id="calcDesc"></p>
       <div class="calc-tabs" id="calcTabs"></div>
       <div class="calc-fields" id="calcFields"></div>
     </div>
     <div class="calc-result">
-      <h3>// ��������� ����������</h3>
+      <h3>// Результат розрахунку</h3>
       <div id="calcOut"></div>
-      <button class="btn btn-orange btn-block res-add" onclick="addCalcToCart()">+ ������ � �����</button>
-      <p class="res-note">* ���������� ���������, � ������� �� ��/������. ������ �������� ��������� � ���������.</p>
+      <button class="btn btn-orange btn-block res-add" onclick="addCalcToCart()">＋ Додати в кошик</button>
+      <p class="res-note">* Розрахунок орієнтовний, з запасом на бій/підрізку. Точний кошторис уточнюйте у менеджера.</p>
     </div>
   </div>
 </main>
 
 <nav class="bottom-nav">
-  <a href="index.html" class="bn-item"><span class="bn-ico">??</span><span>�������</span></a>
-  <a href="catalog.html" class="bn-item"><span class="bn-ico">??</span><span>�������</span></a>
-  <a href="cart.html" class="bn-item"><span class="bn-ico">??</span><span id="bnBadge" class="bn-badge" style="display:none">0</span><span>�����</span></a>
-  <a href="contacts.html" class="bn-item"><span class="bn-ico">??</span><span>��������</span></a>
+  <a href="index.html" class="bn-item"><span class="bn-ico">🏠</span><span>Головна</span></a>
+  <a href="catalog.html" class="bn-item"><span class="bn-ico">📦</span><span>Каталог</span></a>
+  <a href="cart.html" class="bn-item"><span class="bn-ico">🛒</span><span id="bnBadge" class="bn-badge" style="display:none">0</span><span>Кошик</span></a>
+  <a href="contacts.html" class="bn-item"><span class="bn-ico">📞</span><span>Контакти</span></a>
 </nav>
 
 <footer>
   <div class="fwrap">
-    <div><b>�������</b>�. �����, ���. ����������, 27<br>���� 8:00�18:00</div>
-    <div><b>��������</b><a href="tel:+380978950980" style="color:inherit">+38 (097) 895-09-80</a> <a href="viber://chat?number=%2B380978950980" title="Viber" style="color:#7360f2;text-decoration:none;font-size:15px">??</a><br>zakaz@budbaza.ua</div>
-    <div><b>������</b><a href="catalog.html">�������</a><br><a href="calc.html">�����������</a><br><a href="cart.html">�����</a></div>
-    <div><b>��������</b>����� �� �������<br>����������, �������� � ������</div>
+    <div><b>БУДБАЗА</b>м. Одеса, вул. Промислова, 27<br>Пн–Сб 8:00–18:00</div>
+    <div><b>Контакти</b><a href="tel:+380978950980" style="color:inherit">+38 (097) 895-09-80</a> <a href="viber://chat?number=%2B380978950980" title="Viber" style="color:#7360f2;text-decoration:none;font-size:15px">📲</a><br>zakaz@budbaza.ua</div>
+    <div><b>Розділи</b><a href="catalog.html">Каталог</a><br><a href="calc.html">Калькулятор</a><br><a href="cart.html">Кошик</a></div>
+    <div><b>Доставка</b>Одеса та область<br>Маніпулятор, самовивіз зі складу</div>
   </div>
 </footer>
 
@@ -72,13 +72,13 @@
 <script>
 const CALCS = {
   wall: {
-    title:"������ ���", desc:"ʳ������ ����� ��� ��������� �� ������ ��� � ����������� ������.",
+    title:"Кладка стін", desc:"Кількість цегли або газоблоку за площею стін з урахуванням прорізів.",
     fields:[
-      {id:"mat", label:"�������", type:"select", opts:[["gas","�������� 600?200?300 (D400)"],["brick","����� �������� 250?120?65"]]},
-      {id:"len", label:"������� ���, �", type:"num", val:30},
-      {id:"h", label:"������ ���, �", type:"num", val:3},
-      {id:"open", label:"����� ������, �?", type:"num", val:6},
-      {id:"thick", label:"������� ������", type:"select", opts:[["1","� 1 ���� / 0,5 �����"],["2","� 2 ����� / 1 �����"]]},
+      {id:"mat", label:"Матеріал", type:"select", opts:[["gas","Газоблок 600×200×300 (D400)"],["brick","Цегла одинарна 250×120×65"]]},
+      {id:"len", label:"Довжина стін, м", type:"num", val:30},
+      {id:"h", label:"Висота стін, м", type:"num", val:3},
+      {id:"open", label:"Площа прорізів, м²", type:"num", val:6},
+      {id:"thick", label:"Товщина кладки", type:"select", opts:[["1","В 1 блок / 0,5 цегли"],["2","В 2 блоки / 1 цегла"]]},
     ],
     compute(v){
       const area = Math.max(0, v.len*v.h - v.open);
@@ -86,24 +86,24 @@ const CALCS = {
         const qty  = Math.ceil(area * 8.33 * Number(v.thick) * 1.05);
         const glue = Math.ceil(area * Number(v.thick) * 1.5 / 25);
         return {
-          lines:[["����� ������", area.toFixed(1)+" �?"],["��������� (����� 5 %)", qty+" ��"],["���� ��� �����", glue+" ��."]],
+          lines:[["Площа кладки", area.toFixed(1)+" м²"],["Газоблоків (запас 5 %)", qty+" шт"],["Клей для блоку", glue+" міш."]],
           items:[{id:6,qty},{id:2,qty:glue}]
         };
       }
       const qty = Math.ceil(area * 51 * Number(v.thick) * 1.05);
       const cem = Math.ceil(area * Number(v.thick) * 0.021 * 420 / 25);
       return {
-        lines:[["����� ������", area.toFixed(1)+" �?"],["����� (����� 5 %)", qty+" ��"],["������ �� ������", cem+" ��."]],
+        lines:[["Площа кладки", area.toFixed(1)+" м²"],["Цегли (запас 5 %)", qty+" шт"],["Цемент на розчин", cem+" міш."]],
         items:[{id:7,qty},{id:1,qty:cem}]
       };
     }
   },
   concrete: {
-    title:"����� / ���������", desc:"��'�� ������ �� �������� ��� ����������� ���������� (�250).",
+    title:"Бетон / фундамент", desc:"Об'єм бетону та матеріали для самостійного замішування (М250).",
     fields:[
-      {id:"len", label:"�������, �", type:"num", val:10},
-      {id:"w", label:"������, �", type:"num", val:0.4},
-      {id:"d", label:"�������/�������, �", type:"num", val:0.6},
+      {id:"len", label:"Довжина, м", type:"num", val:10},
+      {id:"w", label:"Ширина, м", type:"num", val:0.4},
+      {id:"d", label:"Глибина/товщина, м", type:"num", val:0.6},
     ],
     compute(v){
       const vol = v.len*v.w*v.d;
@@ -111,39 +111,39 @@ const CALCS = {
       const sand = Math.ceil(vol*0.74);
       const grav = Math.ceil(vol*1.15);
       return {
-        lines:[["��'�� ������", vol.toFixed(2)+" �?"],["������ ��-500", cem+" ��."],["ϳ���", (vol*0.74).toFixed(2)+" � (�������� "+sand+" �)"],["����� 5-20", (vol*1.15).toFixed(2)+" � (�������� "+grav+" �)"]],
+        lines:[["Об'єм бетону", vol.toFixed(2)+" м³"],["Цемент ПЦ-500", cem+" міш."],["Пісок", (vol*0.74).toFixed(2)+" т (замовимо "+sand+" т)"],["Щебінь 5-20", (vol*1.15).toFixed(2)+" т (замовимо "+grav+" т)"]],
         items:[{id:1,qty:cem},{id:4,qty:sand},{id:5,qty:grav}]
       };
     }
   },
   plaster: {
-    title:"����������", desc:"ʳ������ ����� �� ������ �� ��������� �������� ����.",
+    title:"Штукатурка", desc:"Кількість суміші за площею та середньою товщиною шару.",
     fields:[
-      {id:"area", label:"����� ���, �?", type:"num", val:60},
-      {id:"mm", label:"������� ����, ��", type:"num", val:15},
+      {id:"area", label:"Площа стін, м²", type:"num", val:60},
+      {id:"mm", label:"Товщина шару, мм", type:"num", val:15},
     ],
     compute(v){
       const kg = v.area * 1.4 * v.mm;
       const bags = Math.ceil(kg/25*1.05);
       return {
-        lines:[["�����", v.area+" �?"],["������� �����", Math.round(kg)+" ��"],["̳��� 25 �� (����� 5 %)", bags+" ��"]],
+        lines:[["Площа", v.area+" м²"],["Витрата суміші", Math.round(kg)+" кг"],["Мішків 25 кг (запас 5 %)", bags+" шт"]],
         items:[{id:3,qty:bags}]
       };
     }
   },
   insul: {
-    title:"��������� ������", desc:"ʳ������ ������ ��� ��������� �� ����� ������.",
+    title:"Утеплення фасаду", desc:"Кількість мінвати або пінопласту на площу фасаду.",
     fields:[
-      {id:"mat", label:"���������", type:"select", opts:[["wool","̳����� 100 �� (��. 1,2 �?)"],["eps","ϳ������� 100 �� (���� 0,5 �?)"]]},
-      {id:"area", label:"����� ������, �?", type:"num", val:120},
+      {id:"mat", label:"Утеплювач", type:"select", opts:[["wool","Мінвата 100 мм (уп. 1,2 м²)"],["eps","Пінопласт 100 мм (лист 0,5 м²)"]]},
+      {id:"area", label:"Площа фасаду, м²", type:"num", val:120},
     ],
     compute(v){
       if(v.mat==="wool"){
         const qty = Math.ceil(v.area/1.2*1.07);
-        return {lines:[["�����", v.area+" �?"],["�������� ������ (����� 7 %)", qty+" ��"]], items:[{id:14,qty}]};
+        return {lines:[["Площа", v.area+" м²"],["Упаковок мінвати (запас 7 %)", qty+" шт"]], items:[{id:14,qty}]};
       }
       const qty = Math.ceil(v.area/0.5*1.07);
-      return {lines:[["�����", v.area+" �?"],["����� ��������� (����� 7 %)", qty+" ��"]], items:[{id:15,qty}]};
+      return {lines:[["Площа", v.area+" м²"],["Листів пінопласту (запас 7 %)", qty+" шт"]], items:[{id:15,qty}]};
     }
   }
 };
@@ -188,7 +188,7 @@ function runCalc(){
   });
   const out = document.getElementById("calcOut");
   if(bad){
-    out.innerHTML = `<div class="res-note">������ ������� ������.</div>`;
+    out.innerHTML = `<div class="res-note">Введіть коректні розміри.</div>`;
     calcItems = [];
     return;
   }
@@ -199,13 +199,13 @@ function runCalc(){
     return s + (p ? p.price*it.qty : 0);
   },0);
   out.innerHTML = r.lines.map(l=>`<div class="res-line"><span>${l[0]}</span><b>${l[1]}</b></div>`).join("")
-    + `<div class="res-line total"><span>�������� �������</span><b>${fmt(total)}</b></div>`;
+    + `<div class="res-line total"><span>Орієнтовна вартість</span><b>${fmt(total)}</b></div>`;
 }
 
 function addCalcToCart(){
-  if(!calcItems.length){ showToast("�������� ������ ������"); return; }
+  if(!calcItems.length){ showToast("Спочатку введіть розміри"); return; }
   calcItems.forEach(it=>addToCart(it.id, it.qty));
-  showToast("�������� � ���������� ������ � �����");
+  showToast("Матеріали з розрахунку додано в кошик");
   setTimeout(()=>{ location.href = "cart.html"; }, 700);
 }
 
