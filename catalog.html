@@ -1,9 +1,9 @@
-п»ї<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="uk">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>РљР°С‚Р°Р»РѕРі вЂ” Р‘РЈР”Р‘РђР—Рђ</title>
+<title>Каталог — БУДБАЗА</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -12,40 +12,40 @@
 <meta name="theme-color" content="#F25C05">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Р‘РЈР”Р‘РђР—Рђ">
+<meta name="apple-mobile-web-app-title" content="БУДБАЗА">
 <link rel="apple-touch-icon" href="/images/icon.svg"></head>
 <body>
 
 <header>
   <div class="hwrap">
-    <a class="logo" href="index.html">Р‘РЈР”<span>Р‘РђР—Рђ</span><small>Р±СѓРґС–РІРµР»СЊРЅС– РјР°С‚РµСЂС–Р°Р»Рё В· РћРґРµСЃР°</small></a>
-    <button class="burger" onclick="toggleNav()" aria-label="РњРµРЅСЋ">в°</button>
+    <a class="logo" href="index.html">БУД<span>БАЗА</span><small>будівельні матеріали · Одеса</small></a>
+    <button class="burger" onclick="toggleNav()" aria-label="Меню">?</button>
     <nav>
-      <a href="index.html">Р“РѕР»РѕРІРЅР°</a>
-      <a href="catalog.html" class="current">РљР°С‚Р°Р»РѕРі</a>
-      <a href="calc.html">РљР°Р»СЊРєСѓР»СЏС‚РѕСЂ</a>
-      <a href="contacts.html">РљРѕРЅС‚Р°РєС‚Рё</a>
+      <a href="index.html">Головна</a>
+      <a href="catalog.html" class="current">Каталог</a>
+      <a href="calc.html">Калькулятор</a>
+      <a href="contacts.html">Контакти</a>
     </nav>
-    <a class="cart-link" href="cart.html">рџ›’ РљРѕС€РёРє <span class="cart-count" id="cartCount">0</span></a>
+    <a class="cart-link" href="cart.html">?? Кошик <span class="cart-count" id="cartCount">0</span></a>
   </div>
 </header>
 
 <main>
-  <div class="breadcrumbs"><a href="index.html">Р“РѕР»РѕРІРЅР°</a> / РљР°С‚Р°Р»РѕРі</div>
+  <div class="breadcrumbs"><a href="index.html">Головна</a> / Каталог</div>
   <div class="sec-head-row">
-    <div class="sec-head"><span class="tag">РљР°С‚Р°Р»РѕРі</span><h2>РњР°С‚РµСЂС–Р°Р»Рё РІ РЅР°СЏРІРЅРѕСЃС‚С–</h2></div>
+    <div class="sec-head"><span class="tag">Каталог</span><h2>Матеріали в наявності</h2></div>
     <div class="search search-sticky-wrap">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-      <input id="searchInput" type="text" placeholder="РџРѕС€СѓРє: С†РµРјРµРЅС‚, РіР°Р·РѕР±Р»РѕРє, Р°СЂРјР°С‚СѓСЂР°...">
+      <input id="searchInput" type="text" placeholder="Пошук: цемент, газоблок, арматура...">
     </div>
   </div>
-  <p class="sec-sub">Р¦С–РЅРё РІРєР°Р·Р°РЅС– Р· РџР”Р’. Р”Р»СЏ РіСѓСЂС‚РѕРІРёС… Р·Р°РјРѕРІР»РµРЅСЊ РІС–Рґ 50 000 в‚ґ вЂ” С–РЅРґРёРІС–РґСѓР°Р»СЊРЅРёР№ РїСЂРѕСЂР°С…СѓРЅРѕРє.</p>
+  <p class="sec-sub">Ціни вказані з ПДВ. Для гуртових замовлень від 50 000 ? — індивідуальний прорахунок.</p>
 
   <div class="drill-crumb" id="drillCrumb" style="display:none"></div>
 
   <div class="catalog-shell">
     <button class="cat-tree-toggle" id="catTreeToggle" onclick="toggleCatTree()" style="display:none">
-      <span>РљР°С‚РµРіРѕСЂС–С—</span><span class="arr">в–ѕ</span>
+      <span>Категорії</span><span class="arr">?</span>
     </button>
     <aside class="cat-tree" id="catTree"></aside>
     <div class="catalog-main-area">
@@ -54,15 +54,15 @@
         <div class="catalog-toolbar">
           <div class="filter-bar">
             <label class="stock-toggle">
-              <input type="checkbox" id="stockOnly"> РўС–Р»СЊРєРё РІ РЅР°СЏРІРЅРѕСЃС‚С–
+              <input type="checkbox" id="stockOnly"> Тільки в наявності
             </label>
             <span class="result-count" id="resultCount"></span>
           </div>
           <select class="sort" id="sortSel">
-            <option value="pop">Р—Р° РїРѕРїСѓР»СЏСЂРЅС–СЃС‚СЋ</option>
-            <option value="cheap">РЎРїРѕС‡Р°С‚РєСѓ РґРµС€РµРІС€С–</option>
-            <option value="exp">РЎРїРѕС‡Р°С‚РєСѓ РґРѕСЂРѕР¶С‡С–</option>
-            <option value="name">Р—Р° РЅР°Р·РІРѕСЋ</option>
+            <option value="pop">За популярністю</option>
+            <option value="cheap">Спочатку дешевші</option>
+            <option value="exp">Спочатку дорожчі</option>
+            <option value="name">За назвою</option>
           </select>
         </div>
         <div class="grid" id="grid"></div>
@@ -72,38 +72,38 @@
 </main>
 
 <nav class="bottom-nav">
-  <a href="index.html" class="bn-item"><span class="bn-ico">рџЏ </span><span>Р“РѕР»РѕРІРЅР°</span></a>
-  <a href="catalog.html" class="bn-item current"><span class="bn-ico">рџ“¦</span><span>РљР°С‚Р°Р»РѕРі</span></a>
-  <a href="cart.html" class="bn-item"><span class="bn-ico">рџ›’</span><span id="bnBadge" class="bn-badge" style="display:none">0</span><span>РљРѕС€РёРє</span></a>
-  <a href="contacts.html" class="bn-item"><span class="bn-ico">рџ“ћ</span><span>РљРѕРЅС‚Р°РєС‚Рё</span></a>
+  <a href="index.html" class="bn-item"><span class="bn-ico">??</span><span>Головна</span></a>
+  <a href="catalog.html" class="bn-item current"><span class="bn-ico">??</span><span>Каталог</span></a>
+  <a href="cart.html" class="bn-item"><span class="bn-ico">??</span><span id="bnBadge" class="bn-badge" style="display:none">0</span><span>Кошик</span></a>
+  <a href="contacts.html" class="bn-item"><span class="bn-ico">??</span><span>Контакти</span></a>
 </nav>
 
 <footer>
   <div class="fwrap">
-    <div><b>Р‘РЈР”Р‘РђР—Рђ</b>Рј. РћРґРµСЃР°, РІСѓР». РџСЂРѕРјРёСЃР»РѕРІР°, 27<br>РџРЅвЂ“РЎР± 8:00вЂ“18:00</div>
-    <div><b>РљРѕРЅС‚Р°РєС‚Рё</b><a href="tel:+380978950980" style="color:inherit">+38 (097) 895-09-80</a> <a href="viber://chat?number=%2B380978950980" title="Viber" style="color:#7360f2;text-decoration:none;font-size:15px">рџ“І</a><br>zakaz@budbaza.ua</div>
-    <div><b>Р РѕР·РґС–Р»Рё</b><a href="catalog.html">РљР°С‚Р°Р»РѕРі</a><br><a href="calc.html">РљР°Р»СЊРєСѓР»СЏС‚РѕСЂ</a><br><a href="cart.html">РљРѕС€РёРє</a></div>
-    <div><b>Р”РѕСЃС‚Р°РІРєР°</b>РћРґРµСЃР° С‚Р° РѕР±Р»Р°СЃС‚СЊ<br>РњР°РЅС–РїСѓР»СЏС‚РѕСЂ, СЃР°РјРѕРІРёРІС–Р· Р·С– СЃРєР»Р°РґСѓ</div>
+    <div><b>БУДБАЗА</b>м. Одеса, вул. Промислова, 27<br>Пн–Сб 8:00–18:00</div>
+    <div><b>Контакти</b><a href="tel:+380978950980" style="color:inherit">+38 (097) 895-09-80</a> <a href="viber://chat?number=%2B380978950980" title="Viber" style="color:#7360f2;text-decoration:none;font-size:15px">??</a><br>zakaz@budbaza.ua</div>
+    <div><b>Розділи</b><a href="catalog.html">Каталог</a><br><a href="calc.html">Калькулятор</a><br><a href="cart.html">Кошик</a></div>
+    <div><b>Доставка</b>Одеса та область<br>Маніпулятор, самовивіз зі складу</div>
   </div>
 </footer>
 
 <script src="js/config.js"></script>
-<script src="js/data.js"></script>
+<script src="js/data.js?v=2"></script>
 <script src="js/app.js"></script>
 <script>
 const PAGE_SIZE = 48;
 const initParams = new URLSearchParams(location.search);
-let activeCat = initParams.get("cat") || "Р’СЃС–";
-if(!CATS.includes(activeCat)) activeCat = "Р’СЃС–";
-let activeSubcat = activeCat!=="Р’СЃС–" ? (initParams.get("subcat") || "") : "";
-let activeSubsubcat = activeCat!=="Р’СЃС–" && activeSubcat ? (initParams.get("subsubcat") || "") : "";
-let activeSubsubsubcat = activeCat!=="Р’СЃС–" && activeSubcat && activeSubsubcat ? (initParams.get("subsubsubcat") || "") : "";
+let activeCat = initParams.get("cat") || "Всі";
+if(!CATS.includes(activeCat)) activeCat = "Всі";
+let activeSubcat = activeCat!=="Всі" ? (initParams.get("subcat") || "") : "";
+let activeSubsubcat = activeCat!=="Всі" && activeSubcat ? (initParams.get("subsubcat") || "") : "";
+let activeSubsubsubcat = activeCat!=="Всі" && activeSubcat && activeSubsubcat ? (initParams.get("subsubsubcat") || "") : "";
 let currentPage = 1;
 let filteredList = [];
 
 function syncUrl(){
   const params = new URLSearchParams();
-  if(activeCat!=="Р’СЃС–") params.set("cat", activeCat);
+  if(activeCat!=="Всі") params.set("cat", activeCat);
   if(activeSubcat) params.set("subcat", activeSubcat);
   if(activeSubsubcat) params.set("subsubcat", activeSubsubcat);
   if(activeSubsubsubcat) params.set("subsubsubcat", activeSubsubsubcat);
@@ -140,22 +140,22 @@ function clearSearch(){
   document.getElementById("searchInput").value = "";
 }
 
-// в”Ђв”Ђв”Ђв”Ђв”Ђ Persistent left tree: РљР°С‚РµРіРѕСЂС–С— в†’ РџС–РґРіСЂСѓРїРё в†’ РџС–Рґ-РїС–РґРіСЂСѓРїРё в”Ђв”Ђв”Ђв”Ђв”Ђ
+// ----- Persistent left tree: Категорії > Підгрупи > Під-підгрупи -----
 function renderTree(){
   catTreeEl.innerHTML = "";
 
   const allBtn = document.createElement("button");
-  allBtn.className = "tree-cat" + (activeCat==="Р’СЃС–" ? " active" : "");
-  allBtn.textContent = `Р’СЃС– (${PRODUCTS.length})`;
+  allBtn.className = "tree-cat" + (activeCat==="Всі" ? " active" : "");
+  allBtn.textContent = `Всі (${PRODUCTS.length})`;
   allBtn.onclick = ()=>{
     clearSearch();
-    activeCat="Р’СЃС–"; activeSubcat=""; activeSubsubcat=""; activeSubsubsubcat=""; currentPage=1;
+    activeCat="Всі"; activeSubcat=""; activeSubsubcat=""; activeSubsubsubcat=""; currentPage=1;
     syncUrl();
     renderAll();
   };
   catTreeEl.appendChild(allBtn);
 
-  const realCats = CATS.filter(c=>c!=="Р’СЃС–").sort((a,b)=>a.localeCompare(b,"uk"));
+  const realCats = CATS.filter(c=>c!=="Всі").sort((a,b)=>a.localeCompare(b,"uk"));
   realCats.forEach(c=>{
     const node = document.createElement("div");
     node.className = "tree-node";
@@ -241,7 +241,7 @@ function renderTree(){
   });
 }
 
-// в”Ђв”Ђв”Ђв”Ђв”Ђ Main area: tiles (next level) or products (leaf level) в”Ђв”Ђв”Ђв”Ђв”Ђ
+// ----- Main area: tiles (next level) or products (leaf level) -----
 function renderTiles(items, onClick){
   tilesGridEl.innerHTML = "";
   items.forEach(it=>{
@@ -249,8 +249,8 @@ function renderTiles(items, onClick){
     div.className = "tile";
     div.innerHTML = (it.img
       ? `<img src="${it.img}" alt="" loading="lazy">`
-      : `<div class="tile-fallback">${it.ico||"рџ“¦"}</div>`)
-      + `<div class="tile-label">${it.label}${it.count!=null?`<div class="tile-count">${it.count} С‚РѕРІР°СЂС–РІ</div>`:""}</div>`;
+      : `<div class="tile-fallback">${it.ico||"??"}</div>`)
+      + `<div class="tile-label">${it.label}${it.count!=null?`<div class="tile-count">${it.count} товарів</div>`:""}</div>`;
     div.onclick = ()=>{ clearSearch(); onClick(it.value); };
     tilesGridEl.appendChild(div);
   });
@@ -258,16 +258,16 @@ function renderTiles(items, onClick){
 
 function updateBreadcrumb(){
   const q = document.getElementById("searchInput").value.trim();
-  if(activeCat==="Р’СЃС–" && !q){ drillCrumbEl.style.display="none"; drillCrumbEl.innerHTML=""; return; }
+  if(activeCat==="Всі" && !q){ drillCrumbEl.style.display="none"; drillCrumbEl.innerHTML=""; return; }
   drillCrumbEl.style.display = "";
-  const parts = [`<a href="#" id="crumbAll">РљР°С‚Р°Р»РѕРі</a>`];
-  if(activeCat!=="Р’СЃС–") parts.push(activeSubcat ? `<a href="#" id="crumbCat">${activeCat}</a>` : activeCat);
+  const parts = [`<a href="#" id="crumbAll">Каталог</a>`];
+  if(activeCat!=="Всі") parts.push(activeSubcat ? `<a href="#" id="crumbCat">${activeCat}</a>` : activeCat);
   if(activeSubcat) parts.push(activeSubsubcat ? `<a href="#" id="crumbSubcat">${activeSubcat}</a>` : activeSubcat);
   if(activeSubsubcat) parts.push(activeSubsubsubcat ? `<a href="#" id="crumbSubsubcat">${activeSubsubcat}</a>` : activeSubsubcat);
   if(activeSubsubsubcat) parts.push(activeSubsubsubcat);
   drillCrumbEl.innerHTML = parts.join(" / ");
   const crumbAll = document.getElementById("crumbAll");
-  if(crumbAll) crumbAll.onclick = (e)=>{ e.preventDefault(); clearSearch(); activeCat="Р’СЃС–"; activeSubcat=""; activeSubsubcat=""; activeSubsubsubcat=""; currentPage=1; syncUrl(); renderAll(); };
+  if(crumbAll) crumbAll.onclick = (e)=>{ e.preventDefault(); clearSearch(); activeCat="Всі"; activeSubcat=""; activeSubsubcat=""; activeSubsubsubcat=""; currentPage=1; syncUrl(); renderAll(); };
   const crumbCat = document.getElementById("crumbCat");
   if(crumbCat) crumbCat.onclick = (e)=>{ e.preventDefault(); clearSearch(); activeSubcat=""; activeSubsubcat=""; activeSubsubsubcat=""; currentPage=1; syncUrl(); renderAll(); };
   const crumbSubcat = document.getElementById("crumbSubcat");
@@ -281,8 +281,8 @@ function renderMain(){
   const q = document.getElementById("searchInput").value.trim();
   let tilesShown = false;
 
-  if(!q && activeCat==="Р’СЃС–"){
-    const realCats = CATS.filter(c=>c!=="Р’СЃС–").sort((a,b)=>a.localeCompare(b,"uk"));
+  if(!q && activeCat==="Всі"){
+    const realCats = CATS.filter(c=>c!=="Всі").sort((a,b)=>a.localeCompare(b,"uk"));
     const items = realCats.map(c=>({
       value:c, label:c,
       img:getTileImg(p=>p.cat===c),
@@ -295,7 +295,7 @@ function renderMain(){
       renderAll();
     });
     tilesShown = true;
-  } else if(!q && activeCat!=="Р’СЃС–" && !activeSubcat){
+  } else if(!q && activeCat!=="Всі" && !activeSubcat){
     const subcats = getSubcats(activeCat);
     if(subcats.length){
       const items = subcats.map(sc=>({
@@ -307,7 +307,7 @@ function renderMain(){
       renderTiles(items, (sc)=>{ activeSubcat=sc; activeSubsubcat=""; activeSubsubsubcat=""; currentPage=1; syncUrl(); renderAll(); });
       tilesShown = true;
     }
-  } else if(!q && activeCat!=="Р’СЃС–" && activeSubcat && !activeSubsubcat){
+  } else if(!q && activeCat!=="Всі" && activeSubcat && !activeSubsubcat){
     const subsubcats = getSubsubcats(activeCat, activeSubcat);
     if(subsubcats.length){
       const items = subsubcats.map(ssc=>({
@@ -319,7 +319,7 @@ function renderMain(){
       renderTiles(items, (ssc)=>{ activeSubsubcat=ssc; activeSubsubsubcat=""; currentPage=1; syncUrl(); renderAll(); });
       tilesShown = true;
     }
-  } else if(!q && activeCat!=="Р’СЃС–" && activeSubcat && activeSubsubcat && !activeSubsubsubcat){
+  } else if(!q && activeCat!=="Всі" && activeSubcat && activeSubsubcat && !activeSubsubsubcat){
     const subsubsubcats = getSubsubsubcats(activeCat, activeSubcat, activeSubsubcat);
     if(subsubsubcats.length){
       const items = subsubsubcats.map(sssc=>({
@@ -348,7 +348,7 @@ function render(){
   const sort = document.getElementById("sortSel").value;
   const stockOnly = document.getElementById("stockOnly").checked;
   filteredList = PRODUCTS.filter(p=>
-    (activeCat==="Р’СЃС–" || p.cat===activeCat) &&
+    (activeCat==="Всі" || p.cat===activeCat) &&
     (!activeSubcat || p.subcat===activeSubcat) &&
     (!activeSubsubcat || p.subsubcat===activeSubsubcat) &&
     (!activeSubsubsubcat || p.subsubsubcat===activeSubsubsubcat) &&
@@ -361,14 +361,14 @@ function render(){
 
   const total = filteredList.length;
   const rcEl = document.getElementById("resultCount");
-  if(rcEl) rcEl.textContent = total ? "Р—РЅР°Р№РґРµРЅРѕ: "+total+" С‚РѕРІР°СЂС–РІ" : "";
+  if(rcEl) rcEl.textContent = total ? "Знайдено: "+total+" товарів" : "";
   const totalPages = Math.ceil(total / PAGE_SIZE);
   if(currentPage > totalPages) currentPage = 1;
   const page = filteredList.slice((currentPage-1)*PAGE_SIZE, currentPage*PAGE_SIZE);
 
   const grid = document.getElementById("grid");
   if(!total){
-    grid.innerHTML = `<div class="empty">РќС–С‡РѕРіРѕ РЅРµ Р·РЅР°Р№РґРµРЅРѕ Р·Р° Р·Р°РїРёС‚РѕРј В«${q}В».<br>РЎРїСЂРѕР±СѓР№С‚Рµ С–РЅС€С– СЃР»РѕРІР° Р°Р±Рѕ Р·Р°С‚РµР»РµС„РѕРЅСѓР№С‚Рµ.</div>`;
+    grid.innerHTML = `<div class="empty">Нічого не знайдено за запитом «${q}».<br>Спробуйте інші слова або зателефонуйте.</div>`;
     renderPager(0,0); return;
   }
   grid.innerHTML = page.map(productCard).join("");
@@ -380,15 +380,15 @@ function renderPager(totalPages, total){
   if(!el){ el = document.createElement("div"); el.id="pager"; el.style="text-align:center;margin:24px 0;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;align-items:center;"; document.getElementById("grid").after(el); }
   if(totalPages <= 1){ el.innerHTML=""; return; }
   const from = (currentPage-1)*PAGE_SIZE+1, to = Math.min(currentPage*PAGE_SIZE, total);
-  let html = `<span style="color:#666;font-size:.85rem">${from}вЂ“${to} Р· ${total}</span>`;
-  if(currentPage>1) html += `<button onclick="goPage(${currentPage-1})" style="padding:6px 14px;border:1px solid #ccc;border-radius:6px;cursor:pointer;background:#fff">в†ђ РќР°Р·Р°Рґ</button>`;
+  let html = `<span style="color:#666;font-size:.85rem">${from}–${to} з ${total}</span>`;
+  if(currentPage>1) html += `<button onclick="goPage(${currentPage-1})" style="padding:6px 14px;border:1px solid #ccc;border-radius:6px;cursor:pointer;background:#fff">< Назад</button>`;
   // up to 7 page buttons
   const start = Math.max(1, currentPage-3), end = Math.min(totalPages, start+6);
   for(let p=start;p<=end;p++){
     const active = p===currentPage ? "background:#e63000;color:#fff;border-color:#e63000;" : "background:#fff;";
     html += `<button onclick="goPage(${p})" style="padding:6px 12px;border:1px solid #ccc;border-radius:6px;cursor:pointer;min-width:36px;${active}">${p}</button>`;
   }
-  if(currentPage<totalPages) html += `<button onclick="goPage(${currentPage+1})" style="padding:6px 14px;border:1px solid #ccc;border-radius:6px;cursor:pointer;background:#fff">Р’РїРµСЂРµРґ в†’</button>`;
+  if(currentPage<totalPages) html += `<button onclick="goPage(${currentPage+1})" style="padding:6px 14px;border:1px solid #ccc;border-radius:6px;cursor:pointer;background:#fff">Вперед ></button>`;
   el.innerHTML = html;
 }
 

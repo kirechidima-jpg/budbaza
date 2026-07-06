@@ -1,9 +1,9 @@
-п»ї<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="uk">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>РўРѕРІР°СЂ вЂ” Р‘РЈР”Р‘РђР—Рђ</title>
+<title>Товар — БУДБАЗА</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -12,60 +12,60 @@
 <meta name="theme-color" content="#F25C05">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Р‘РЈР”Р‘РђР—Рђ">
+<meta name="apple-mobile-web-app-title" content="БУДБАЗА">
 <link rel="apple-touch-icon" href="/images/icon.svg"></head>
 <body>
 
 <header>
   <div class="hwrap">
-    <a class="logo" href="index.html">Р‘РЈР”<span>Р‘РђР—Рђ</span><small>Р±СѓРґС–РІРµР»СЊРЅС– РјР°С‚РµСЂС–Р°Р»Рё В· РћРґРµСЃР°</small></a>
-    <button class="burger" onclick="toggleNav()" aria-label="РњРµРЅСЋ">в°</button>
+    <a class="logo" href="index.html">БУД<span>БАЗА</span><small>будівельні матеріали · Одеса</small></a>
+    <button class="burger" onclick="toggleNav()" aria-label="Меню">?</button>
     <nav>
-      <a href="index.html">Р“РѕР»РѕРІРЅР°</a>
-      <a href="catalog.html" class="current">РљР°С‚Р°Р»РѕРі</a>
-      <a href="calc.html">РљР°Р»СЊРєСѓР»СЏС‚РѕСЂ</a>
-      <a href="contacts.html">РљРѕРЅС‚Р°РєС‚Рё</a>
+      <a href="index.html">Головна</a>
+      <a href="catalog.html" class="current">Каталог</a>
+      <a href="calc.html">Калькулятор</a>
+      <a href="contacts.html">Контакти</a>
     </nav>
-    <a class="cart-link" href="cart.html">рџ›’ РљРѕС€РёРє <span class="cart-count" id="cartCount">0</span></a>
+    <a class="cart-link" href="cart.html">?? Кошик <span class="cart-count" id="cartCount">0</span></a>
   </div>
 </header>
 
 <main>
-  <div class="breadcrumbs" id="crumbs"><a href="index.html">Р“РѕР»РѕРІРЅР°</a> / <a href="catalog.html">РљР°С‚Р°Р»РѕРі</a></div>
+  <div class="breadcrumbs" id="crumbs"><a href="index.html">Головна</a> / <a href="catalog.html">Каталог</a></div>
   <div id="productBox"></div>
   <section id="viewedSec" style="margin-top:48px">
-    <div class="sec-head"><span class="tag">Р†СЃС‚РѕСЂС–СЏ</span><h2>РќРµС‰РѕРґР°РІРЅРѕ РїРµСЂРµРіР»СЏРЅСѓС‚С–</h2></div>
+    <div class="sec-head"><span class="tag">Історія</span><h2>Нещодавно переглянуті</h2></div>
     <div class="viewed-scroll" id="viewedGrid"></div>
   </section>
   <section class="related" id="relatedSec" style="display:none">
-    <div class="sec-head"><span class="tag">РЎС…РѕР¶С– С‚РѕРІР°СЂРё</span><h2>Р— С†С–С”С— Р¶ РєР°С‚РµРіРѕСЂС–С—</h2></div>
+    <div class="sec-head"><span class="tag">Схожі товари</span><h2>З цієї ж категорії</h2></div>
     <div class="grid" id="relatedGrid"></div>
   </section>
 </main>
 
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
-  <button class="lightbox-close" onclick="closeLightbox()">вњ•</button>
+  <button class="lightbox-close" onclick="closeLightbox()">?</button>
   <img id="lbImg" src="" alt="" onclick="event.stopPropagation()">
 </div>
 
 <nav class="bottom-nav">
-  <a href="index.html" class="bn-item"><span class="bn-ico">рџЏ </span><span>Р“РѕР»РѕРІРЅР°</span></a>
-  <a href="catalog.html" class="bn-item current"><span class="bn-ico">рџ“¦</span><span>РљР°С‚Р°Р»РѕРі</span></a>
-  <a href="cart.html" class="bn-item"><span class="bn-ico">рџ›’</span><span id="bnBadge" class="bn-badge" style="display:none">0</span><span>РљРѕС€РёРє</span></a>
-  <a href="contacts.html" class="bn-item"><span class="bn-ico">рџ“ћ</span><span>РљРѕРЅС‚Р°РєС‚Рё</span></a>
+  <a href="index.html" class="bn-item"><span class="bn-ico">??</span><span>Головна</span></a>
+  <a href="catalog.html" class="bn-item current"><span class="bn-ico">??</span><span>Каталог</span></a>
+  <a href="cart.html" class="bn-item"><span class="bn-ico">??</span><span id="bnBadge" class="bn-badge" style="display:none">0</span><span>Кошик</span></a>
+  <a href="contacts.html" class="bn-item"><span class="bn-ico">??</span><span>Контакти</span></a>
 </nav>
 
 <footer>
   <div class="fwrap">
-    <div><b>Р‘РЈР”Р‘РђР—Рђ</b>Рј. РћРґРµСЃР°, РІСѓР». РџСЂРѕРјРёСЃР»РѕРІР°, 27<br>РџРЅвЂ“РЎР± 8:00вЂ“18:00</div>
-    <div><b>РљРѕРЅС‚Р°РєС‚Рё</b><a href="tel:+380978950980" style="color:inherit">+38 (097) 895-09-80</a> <a href="viber://chat?number=%2B380978950980" title="Viber" style="color:#7360f2;text-decoration:none;font-size:15px">рџ“І</a><br>zakaz@budbaza.ua</div>
-    <div><b>Р РѕР·РґС–Р»Рё</b><a href="catalog.html">РљР°С‚Р°Р»РѕРі</a><br><a href="calc.html">РљР°Р»СЊРєСѓР»СЏС‚РѕСЂ</a><br><a href="cart.html">РљРѕС€РёРє</a></div>
-    <div><b>Р”РѕСЃС‚Р°РІРєР°</b>РћРґРµСЃР° С‚Р° РѕР±Р»Р°СЃС‚СЊ<br>РњР°РЅС–РїСѓР»СЏС‚РѕСЂ, СЃР°РјРѕРІРёРІС–Р· Р·С– СЃРєР»Р°РґСѓ</div>
+    <div><b>БУДБАЗА</b>м. Одеса, вул. Промислова, 27<br>Пн–Сб 8:00–18:00</div>
+    <div><b>Контакти</b><a href="tel:+380978950980" style="color:inherit">+38 (097) 895-09-80</a> <a href="viber://chat?number=%2B380978950980" title="Viber" style="color:#7360f2;text-decoration:none;font-size:15px">??</a><br>zakaz@budbaza.ua</div>
+    <div><b>Розділи</b><a href="catalog.html">Каталог</a><br><a href="calc.html">Калькулятор</a><br><a href="cart.html">Кошик</a></div>
+    <div><b>Доставка</b>Одеса та область<br>Маніпулятор, самовивіз зі складу</div>
   </div>
 </footer>
 
 <script src="js/config.js"></script>
-<script src="js/data.js"></script>
+<script src="js/data.js?v=2"></script>
 <script src="js/app.js"></script>
 <script>
 const id = parseInt(new URLSearchParams(location.search).get("id"), 10);
@@ -73,11 +73,11 @@ const p = PRODUCTS.find(x=>x.id===id);
 const box = document.getElementById("productBox");
 
 if(!p){
-  box.innerHTML = `<div class="empty" style="display:block">РўРѕРІР°СЂ РЅРµ Р·РЅР°Р№РґРµРЅРѕ. <br><br><a class="btn btn-dark" href="catalog.html">РџРѕРІРµСЂРЅСѓС‚РёСЃСЏ РІ РєР°С‚Р°Р»РѕРі</a></div>`;
+  box.innerHTML = `<div class="empty" style="display:block">Товар не знайдено. <br><br><a class="btn btn-dark" href="catalog.html">Повернутися в каталог</a></div>`;
 }else{
-  document.title = p.name + " вЂ” Р‘РЈР”Р‘РђР—Рђ";
+  document.title = p.name + " — БУДБАЗА";
   {
-    let crumbHtml = `<a href="index.html">Р“РѕР»РѕРІРЅР°</a> / <a href="catalog.html">РљР°С‚Р°Р»РѕРі</a> / <a href="catalog.html?cat=${encodeURIComponent(p.cat)}">${p.cat}</a>`;
+    let crumbHtml = `<a href="index.html">Головна</a> / <a href="catalog.html">Каталог</a> / <a href="catalog.html?cat=${encodeURIComponent(p.cat)}">${p.cat}</a>`;
     if(p.subcat) crumbHtml += ` / <a href="catalog.html?cat=${encodeURIComponent(p.cat)}&subcat=${encodeURIComponent(p.subcat)}">${p.subcat}</a>`;
     if(p.subsubcat) crumbHtml += ` / <a href="catalog.html?cat=${encodeURIComponent(p.cat)}&subcat=${encodeURIComponent(p.subcat)}&subsubcat=${encodeURIComponent(p.subsubcat)}">${p.subsubcat}</a>`;
     crumbHtml += ` / ${p.name}`;
@@ -114,8 +114,8 @@ if(!p){
 
   trackViewed(p.id);
 
-  // JSON-LD РґР»СЏ Google
-  const ld = {"@context":"https://schema.org/","@type":"Product","name":p.name,"description":p.desc||p.name,"sku":p.meta||String(p.id),"offers":{"@type":"Offer","priceCurrency":"UAH","price":p.price>0?p.price:undefined,"availability":(typeof p.stock==="number"&&p.stock>0)?"https://schema.org/InStock":"https://schema.org/OutOfStock","seller":{"@type":"Organization","name":"Р‘РЈР”Р‘РђР—Рђ"}}};
+  // JSON-LD для Google
+  const ld = {"@context":"https://schema.org/","@type":"Product","name":p.name,"description":p.desc||p.name,"sku":p.meta||String(p.id),"offers":{"@type":"Offer","priceCurrency":"UAH","price":p.price>0?p.price:undefined,"availability":(typeof p.stock==="number"&&p.stock>0)?"https://schema.org/InStock":"https://schema.org/OutOfStock","seller":{"@type":"Organization","name":"БУДБАЗА"}}};
   if(p.img) ld.image = p.img;
   const ldEl = document.createElement("script"); ldEl.type="application/ld+json"; ldEl.textContent=JSON.stringify(ld); document.head.appendChild(ldEl);
   if(typeof gtag!=="undefined") gtag("event","view_item",{items:[{item_id:p.id,item_name:p.name,price:p.price}]});
@@ -125,20 +125,20 @@ if(!p){
       ${buildGallery()}
       <div>
         <div class="p-actions">
-          <button class="btn-back" onclick="history.length>1?history.back():location.href='catalog.html?cat='+encodeURIComponent('${p.cat}')">в†ђ РќР°Р·Р°Рґ</button>
-          <button class="btn-share" onclick="shareProduct('${p.name.replace(/'/g,"\\'")}', location.href)">в¬† РџРѕРґС–Р»РёС‚РёСЃСЏ</button>
+          <button class="btn-back" onclick="history.length>1?history.back():location.href='catalog.html?cat='+encodeURIComponent('${p.cat}')">< Назад</button>
+          <button class="btn-share" onclick="shareProduct('${p.name.replace(/'/g,"\\'")}', location.href)">? Поділитися</button>
         </div>
         <div class="p-cat">${p.cat}</div>
         <h1>${p.name}</h1>
         <div class="p-meta">${p.meta}</div>
         <div class="p-buy">
           <div class="p-price">${fmt(p.price)} <small>/ ${p.unit}</small></div>
-          <div class="qty" aria-label="РљС–Р»СЊРєС–СЃС‚СЊ">
-            <button onclick="chg(-1)" aria-label="РњРµРЅС€Рµ">в€’</button>
+          <div class="qty" aria-label="Кількість">
+            <button onclick="chg(-1)" aria-label="Менше">?</button>
             <span id="qtyVal">1</span>
-            <button onclick="chg(1)" aria-label="Р‘С–Р»СЊС€Рµ">+</button>
+            <button onclick="chg(1)" aria-label="Більше">+</button>
           </div>
-          <button class="btn btn-orange" id="add-${p.id}" onclick="buy()">пј‹ Р”РѕРґР°С‚Рё РІ РєРѕС€РёРє</button>
+          <button class="btn btn-orange" id="add-${p.id}" onclick="buy()">+ Додати в кошик</button>
         </div>
         <p class="p-desc">${p.desc}</p>
         <div class="spec">
